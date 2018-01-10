@@ -10,7 +10,6 @@ class CadastrarComponent extends Component {
         <button>
           <Link to={'/auth/login'}>Login</Link>
         </button>
-        <button>Home</button>
       </div>
     );
   }
