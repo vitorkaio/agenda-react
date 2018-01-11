@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './addContact.css';
-// import Contact from './../../../shared/models/contact'
+import Contact from './../../../shared/models/contact'
 import { Input } from 'semantic-ui-react'
 
 // Component for insertation of a contact.
@@ -8,7 +8,7 @@ class AddContactComponent extends Component {
 
   constructor(props) {
     super(props);
-    console.log("HomeComponent");
+    console.log("AddContactComponent");
     this.state = {name: "", tel: "", email: "", andress: "", description: ""};
     this.nameVazio = false; // Verifica se o name está vazio.
   }
@@ -78,27 +78,36 @@ class AddContactComponent extends Component {
       this.nameVazio = true;
       this.setState({name: ""}); // Só para forçar um render.
     }
-    else
-      console.log(this.state);
+    else {
+      let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.state.andress, this.state.description);
+      console.log(contact.toString());
+    }
+
+    event.preventDefault(); // Impede de submeter o formulário
     
   }
 
   render() {
-    console.log("name-size: ", this.state.name.length);
+    // console.log("name-size: ", this.state.name.length);
     return (
       <div className="adicionar">
         <form onSubmit={this.submit.bind(this)}>
           
-          <Input type="text" icon='users' value={this.state.name} iconPosition='left' placeholder='Nome' 
+          <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left'
           onChange={this.inputName.bind(this)} />
           
           {this.nameVazio === true ? <h5>name está vazio</h5> : null}
           
-          <Input type="number" required icon='call' value={this.state.tel} iconPosition='left' placeholder='Telefone' 
+          <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' 
           onChange={this.inputTel.bind(this)} />
 
-          <Input type="email" required icon='mail' value={this.state.email} iconPosition='left' placeholder='Email' 
+          <Input placeholder='Email' type="email" required icon='mail' value={this.state.email} iconPosition='left' 
           onChange={this.inputEmail.bind(this)} />
+
+          <Input placeholder='Endereço' type="text" required icon='map' value={this.state.andress} iconPosition='left' 
+          onChange={this.inputAndress.bind(this)} />
+
+          <textarea placeholder="Descrição" value={this.state.description} onChange={this.inputDescription.bind(this)}></textarea>
           
           <input type="submit" value="Submit" />
         </form>

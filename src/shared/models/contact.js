@@ -46,7 +46,7 @@ class Contact {
   }
 
   toString() {
-    return `\nName: ${this.name}\nTel: ${this.tel}\nEmail: ${this.email}\Andress: ${this.andress}\Description: ${this.description}`;
+    return `\nName: ${this.name}\nTel: ${this.tel}\nEmail: ${this.email}\nAndress: ${this.andress}\nDescription: ${this.description}`;
   }
 
 }// Fim da classe
