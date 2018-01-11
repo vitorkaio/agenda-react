@@ -8,6 +8,10 @@ class HomeComponent extends Component {
   constructor(props) {
     super(props);
     console.log("HomeComponent");
+    // Exemplo para bloquear um rota.
+    //let user = "kaio";
+    //if(user != "vih")
+    //  this.props.history.push("/auth/login");
   }
 
   goLogin() {
@@ -15,10 +19,15 @@ class HomeComponent extends Component {
     this.props.history.push("/auth/login");
   }
 
+  goAdicionar() {
+    this.props.history.push("/agenda/adicionar");
+  }
+
   render() {
     return (
       <div>
         <button onClick={this.goLogin.bind(this)}>Login</button>
+        <button onClick={this.goAdicionar.bind(this)}>Adicionar</button>
       </div>
     );
   }

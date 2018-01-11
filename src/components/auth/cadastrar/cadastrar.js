@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './cadastrar.css';
-
 import { Link } from 'react-router-dom'
 
 class CadastrarComponent extends Component {
