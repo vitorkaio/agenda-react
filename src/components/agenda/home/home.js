@@ -20,14 +20,14 @@ class HomeComponent extends Component {
   }
 
   goAdicionar() {
-    this.props.history.push("/agenda/adicionar");
+    this.props.history.push("/agenda/add");
   }
 
   render() {
     return (
       <div>
         <button onClick={this.goLogin.bind(this)}>Login</button>
-        <button onClick={this.goAdicionar.bind(this)}>Adicionar</button>
+        <button onClick={this.goAdicionar.bind(this)}>Adicionar Contato</button>
       </div>
     );
   }

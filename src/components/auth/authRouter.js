@@ -2,14 +2,14 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import LoginComponent from './login/login'
-import CadastrarComponent from './cadastrar/cadastrar'
+import RegisterComponent from './register/register'
 
-// Define as rotas para os componentes de autenticação.
+// Declaration of routes for components of authentication.
 
 const AuthRouter = () => (
     <Switch>
       <Route exact path='/auth/login' component={LoginComponent}/>
-      <Route exact path='/auth/cadastrar' component={CadastrarComponent}/>
+      <Route exact path='/auth/register' component={RegisterComponent}/>
       <Redirect to="/auth/login" />
     </Switch>
 )

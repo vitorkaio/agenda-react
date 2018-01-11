@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import AuthRouter  from './components/auth/authRouter'
 import AgendaRouter from './components/agenda/agendaRouter'
 
-// Define as rotas da aplicação.
+// Declaration of routes for at sub-routes of app.
 
 const Routes = () => (
   <main>

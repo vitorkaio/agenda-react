@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import './cadastrar.css';
+import './register.css';
 import { Link } from 'react-router-dom'
 
-class CadastrarComponent extends Component {
+class RegisterComponent extends Component {
 
   constructor(props) {
     super(props)
-    console.log("CadastrarComponent");
+    console.log("RegisterComponent");
   }
 
   render() {
@@ -20,4 +20,4 @@ class CadastrarComponent extends Component {
   }
 }
 
-export default CadastrarComponent;
+export default RegisterComponent;
