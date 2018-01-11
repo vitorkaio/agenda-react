@@ -7,12 +7,15 @@ import AddContactComponent from './addContact/addContatc'
 // Define as rotas para os componentes de autenticação.
 
 const AgendaRouter = () => (
+  <div>
+    <h3>Navbar</h3>
     <Switch>
-      <h3>Navbar</h3>
       <Route exact path='/agenda/home' component={HomeComponent}/>
       <Route exact path='/agenda/add' component={AddContactComponent}/>
       <Redirect to="/agenda/home" />
     </Switch>
+  </div>  
+  
 )
 
 export default AgendaRouter
