@@ -13,7 +13,7 @@ class AdicionarComponent extends Component {
     //if(user != "vih")
     //  this.props.history.push("/auth/login");
     this.state = {nome: "", telefone: ""};
-    this.nomeVazio = false;
+    this.nomeVazio = false; // Verifica se o nome está vazio.
   }
 
   goHome() {
@@ -50,7 +50,7 @@ class AdicionarComponent extends Component {
       <div className="adicionar">
         <form onSubmit={this.submitt.bind(this)}>
           <Input type="text" icon='users' value={this.state.nome} iconPosition='left' placeholder='Nome' onChange={this.nome.bind(this)} />
-          {this.nomeVazio === true ? <h5>Nome está vazio</h5> : <p></p>}
+          {this.nomeVazio === true ? <h5>Nome está vazio</h5> : null}
           <Input type="number" required icon='call' value={this.state.telefone} iconPosition='left' placeholder='Telefone' onChange={this.telefone.bind(this)} />
           <input type="submit" value="Submit" />
         </form>
