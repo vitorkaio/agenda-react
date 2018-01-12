@@ -1,7 +1,7 @@
 export function insertContact(contact){
   return {
     type: 'ADD_CONCTACS',
-    payload: cel
+    payload: contact
   }
 }
 

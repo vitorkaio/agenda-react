@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './addContact.css';
-import Contact from './../../../shared/models/contact'
-import { Input } from 'semantic-ui-react'
+import Contact from './../../../shared/models/contact';
+import { Input } from 'semantic-ui-react';
+import Rx from 'rxjs/Rx';
+import ApiService from './../../../shared/services/apiServices'
 
 // Component for insertation of a contact.
 class AddContactComponent extends Component {
@@ -9,8 +11,59 @@ class AddContactComponent extends Component {
   constructor(props) {
     super(props);
     console.log("AddContactComponent");
-    this.state = {name: "", tel: "", email: "", andress: "", description: ""};
+    this.state = {name: "", tel: "", email: "", cep: "", description: ""};
     this.nameVazio = false; // Verifica se o name está vazio.
+    this.loadingCEP = false;
+    this.entradaRxjs = new Rx.Subject(); // For input CEP.
+    this.subscriptionCEP = null;
+    this.subscriptionApiService = null;
+  }
+
+  // Após a inicialização do dom.
+  componentDidMount(){
+    console.log('Subscribe in entradaRxjs');
+    this.subscriptionCEP = this.entradaRxjs
+      .debounceTime(1000)
+      .distinctUntilChanged()
+      .subscribe(this.getObsCep());
+      
+  }
+
+  // After component will be destroyed.
+  componentWillUnmount() {
+    this.subscriptionCEP.unsubscribe(); // Unsubscribe of a observable.
+    console.log('AddContactComponente - WillUnmount')
+  }
+
+  getObsCep() {
+    let obs = {
+      next: (data) =>{
+        this.subscriptionApiService = ApiService.consultaCEP(data).subscribe(this.getObsApiService());
+      },
+      error: (err) => {
+
+      },
+      complete: () =>{
+        this.subscriptionApiService.unsubscribe(); // Unsubscribe of a observable.
+      }
+    }
+
+    return obs;
+  }
+
+  getObsApiService() {
+    let obs = {
+      next: (data) =>{
+        console.log(data.data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () =>{
+        console.log('Done!');
+      }
+    }
+    return obs;
   }
 
   /**
@@ -55,7 +108,9 @@ class AddContactComponent extends Component {
     * @memberof AddContactComponent
   */
   inputAndress(event) {
-    this.setState({andress: event.target.value});
+    this.setState({cep: event.target.value}, () => {
+      this.entradaRxjs.next(this.state.cep);
+    });
   }
 
   /**
@@ -80,7 +135,7 @@ class AddContactComponent extends Component {
     }
     else {
       let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.state.andress, this.state.description);
-      console.log(contact.toString());
+      console.log(contact.toJson());
     }
 
     event.preventDefault(); // Impede de submeter o formulário
@@ -88,7 +143,7 @@ class AddContactComponent extends Component {
   }
 
   render() {
-    // console.log("name-size: ", this.state.name.length);
+    console.log("Renderizando formulário");
     return (
       <div className="adicionar">
         <form onSubmit={this.submit.bind(this)}>
@@ -104,7 +159,7 @@ class AddContactComponent extends Component {
           <Input placeholder='Email' type="email" required icon='mail' value={this.state.email} iconPosition='left' 
           onChange={this.inputEmail.bind(this)} />
 
-          <Input placeholder='Endereço' type="text" required icon='map' value={this.state.andress} iconPosition='left' 
+          <Input placeholder='CEP' type="text" required icon='map' value={this.state.cep} iconPosition='left' 
           onChange={this.inputAndress.bind(this)} />
 
           <textarea placeholder="Descrição" value={this.state.description} onChange={this.inputDescription.bind(this)}></textarea>

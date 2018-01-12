@@ -1,11 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
 
-import contactReducer from './reducers/contactsReducers'
+import userReducer from './reducers/userReducer'
 import otherReducer from './reducers/otherReducer'
 
 export default createStore(
-  combineReducers({contactReducer, otherReducer}),
+  combineReducers({userReducer, otherReducer}),
   {},
   applyMiddleware(logger)
 )

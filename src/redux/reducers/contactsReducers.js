@@ -1,17 +1,22 @@
+import FakeServer from './../../shared/services/fakeServer'
+
+const fakeServer = new FakeServer();
+
 let modeloInicial = {
-  listContacts: []
+  listContacts: fakeServer.getList()
 }
 
 const contactReducer = (state = modeloInicial, action) => {
   switch (action.type) {
     case 'ADD_CONCTACS':
+      fakeServer.pushContact(action.payload);
       state = {
         ...state,
-        listContacts: [...state.listContacts, action.payload]
+        listContacts: fakeServer.getList()
       }
       break;
 
-    case 'POP_CONCTACt':
+    case 'POP_CONCTACT':
       state = {
         ...state,
         listContacts: action.payload 
@@ -21,7 +26,7 @@ const contactReducer = (state = modeloInicial, action) => {
     case 'INSERT_CONTACTS':
       state = {
         ...state,
-        listContacts: action.payload.slice() 
+        listContacts: action.payload
       }
     break;
   
