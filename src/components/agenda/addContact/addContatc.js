@@ -11,7 +11,10 @@ class AddContactComponent extends Component {
   constructor(props) {
     super(props);
     console.log("AddContactComponent");
-    this.state = {name: "", tel: "", email: "", cep: "", description: ""};
+    this.state = {name: "", tel: "", email: "", cep: "", description: "", city: ""};
+    this.estado = "";
+    this.andress = "";
+
     this.nameVazio = false; // Verifica se o name está vazio.
     this.loadingCEP = false;
     this.entradaRxjs = new Rx.Subject(); // For input CEP.
@@ -35,6 +38,7 @@ class AddContactComponent extends Component {
     console.log('AddContactComponente - WillUnmount')
   }
 
+  // Funcs for observables of the cep.
   getObsCep() {
     let obs = {
       next: (data) =>{
@@ -51,13 +55,21 @@ class AddContactComponent extends Component {
     return obs;
   }
 
+  // Funcs for observables of the api.
   getObsApiService() {
     let obs = {
       next: (data) =>{
         console.log(data.data);
+        this.estado = data.data.uf;
+        this.andress = `${data.data.logradouro}, Bairro: ${data.data.bairro}`;
+        this.setState({city: data.data.localidade});
       },
       error: (err) => {
-        console.log(err);
+        if(err === false) {
+          this.estado = "";
+          this.andress = "";
+          this.setState({city: ""});
+        }
       },
       complete: () =>{
         console.log('Done!');
@@ -66,67 +78,40 @@ class AddContactComponent extends Component {
     return obs;
   }
 
-  /**
-    * Navigate for HomeComponent.
-    * @memberof AddContactComponent
-  */
+  // Navigate for HomeComponent.
   navigateToHome() {
     this.props.history.push("/agenda/home");
   }
 
-  /**
-    * Inserts value of name input in name state value.
-    * @param {any} event Event with value of input.
-    * @memberof AddContactComponent
-  */
-  inputName(event) {
-    this.setState({name: event.target.value});
+  // Inserts value of name input in name state value.
+  inputName(e) {
+    this.setState({name: e.target.value});
     this.nameVazio = false;
   }
 
-  /**
-    * Inserts value of tel input in tel state value.
-    * @param {any} event Event with value of input.
-    * @memberof AddContactComponent
-  */
-  inputTel(event) {
-    this.setState({tel: event.target.value});
+  // Inserts value of tel input in tel state value.
+  inputTel(e) {
+    this.setState({tel: e.target.value});
   }
 
-  /**
-    * Inserts value of email input in email state value.
-    * @param {any} event Event with value of input.
-    * @memberof AddContactComponent
-  */
-  inputEmail(event) {
-    this.setState({email: event.target.value});
+  // Inserts value of email input in email state value.
+  inputEmail(e) {
+    this.setState({email: e.target.value});
   }
 
-  /**
-    * Inserts value of andress input in andress state value.
-    * @param {any} event Event with value of input.
-    * @memberof AddContactComponent
-  */
-  inputAndress(event) {
-    this.setState({cep: event.target.value}, () => {
+  // Inserts value of andress input in andress state value.
+  inputAndress(e) {
+    this.setState({cep: e.target.value}, () => {
       this.entradaRxjs.next(this.state.cep);
     });
   }
 
-  /**
-    * Inserts value of drescription input in drescription state value.
-    * @param {any} event Event with value of input.
-    * @memberof AddContactComponent
-  */
-  inputDescription(event) {
-    this.setState({description: event.target.value});
+  // Inserts value of drescription input in drescription state value.
+  inputDescription(e) {
+    this.setState({description: e.target.value});
   }
   
-  /**
-    * Submit data.
-    * @param {any} event Event with value of input.
-    * @memberof AddContactComponent
-  */
+  // Submit data.
   submit(event) {
     if(this.state.name.length === 0) {
       event.preventDefault(); // Impede de submeter o formulário
@@ -139,7 +124,6 @@ class AddContactComponent extends Component {
     }
 
     event.preventDefault(); // Impede de submeter o formulário
-    
   }
 
   render() {
@@ -148,23 +132,36 @@ class AddContactComponent extends Component {
       <div className="adicionar">
         <form onSubmit={this.submit.bind(this)}>
           
-          <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left'
-          onChange={this.inputName.bind(this)} />
-          
-          {this.nameVazio === true ? <h5>name está vazio</h5> : null}
-          
-          <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' 
-          onChange={this.inputTel.bind(this)} />
+        <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left'
+        onChange={this.inputName.bind(this)} />
+        
+        {this.nameVazio === true ? <h5>name está vazio</h5> : null}
+        
+        <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' 
+        onChange={this.inputTel.bind(this)} />
 
-          <Input placeholder='Email' type="email" required icon='mail' value={this.state.email} iconPosition='left' 
-          onChange={this.inputEmail.bind(this)} />
+        <Input placeholder='Email' type="email" required icon='mail' value={this.state.email} iconPosition='left' 
+        onChange={this.inputEmail.bind(this)} />
 
+        <div className="ceps">
           <Input placeholder='CEP' type="text" required icon='map' value={this.state.cep} iconPosition='left' 
           onChange={this.inputAndress.bind(this)} />
 
-          <textarea placeholder="Descrição" value={this.state.description} onChange={this.inputDescription.bind(this)}></textarea>
+          <Input placeholder='Cidade' type="text" required icon='map' value={this.state.city} iconPosition='left' 
+          disabled />
+
+          <Input placeholder='Estado' type="text" required icon='map' value={this.estado} iconPosition='left' 
+          disabled />
+
+          <Input placeholder='Endereço' type="text" required icon='map' value={this.andress} iconPosition='left' 
+          disabled />
+
+        </div>
+
+        <textarea placeholder="Descrição" value={this.state.description} onChange={this.inputDescription.bind(this)}></textarea>
           
           <input type="submit" value="Submit" />
+
         </form>
         
         <button onClick={this.navigateToHome.bind(this)}>home</button>

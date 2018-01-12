@@ -6,8 +6,6 @@ const contatcsUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/contato
 // Acess api services.
 class ApiService {
 
-  constructor() {}
-
   // Return all contacts of the mongodb
   static getAllContacts() {
     return Observable.create(obs => {
@@ -27,7 +25,7 @@ class ApiService {
       
       let cep = numero.replace(/\D/g, '');
     
-      if (cep != "") {
+      if (cep !== "") {
         let validacep = /^[0-9]{8}$/; //Expressão regular para validar o CEP.
   
         //Valida o formato do CEP.

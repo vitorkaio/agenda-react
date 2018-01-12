@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './home.css';
 import ApiServer from './../../../shared/services/apiServices'
+import ListarComponent from './listar/listar'
 
 // import { Link } from 'react-router-dom'
 
@@ -11,6 +12,7 @@ class HomeComponent extends Component {
     this.state = {contacts: []}
     this.lista = [];
     this.subscription = null;
+    this.erroServidor = false;
 
     console.log("HomeComponente - Constructor");
     
@@ -38,12 +40,12 @@ class HomeComponent extends Component {
         });
       },
       error: (err) => {
-        console.log('erro: ' + err);
-        this.erroServidor = '404 - Erro no servidor!';
+        console.log(err);
+        this.erroServidor = false;
       },
       complete: () => {
-        console.log('Done');
-        this.setState({contacts: this.lista.slice()})
+        this.erroServidor = true;
+        this.setState({contacts: this.lista.slice()});
       }
     }
     return obs;
@@ -70,16 +72,25 @@ class HomeComponent extends Component {
     return saida;
   }
 
+  renderizaLista() {
+    if(this.erroServidor === false)
+      return (<h3>Error no servidor - 404</h3>);
+    
+    return (
+     <ListarComponent itens={this.state.contacts}/>
+    );
+    
+  }
+
   render() {
     console.log('HomeComponente - Rendenrizado');
+    const saida = this.renderizaLista();
     return (
       <div>
         <button onClick={this.goLogin.bind(this)}>Login</button>
         <button onClick={this.goAdicionar.bind(this)}>Adicionar Contato</button>
         <button onClick={this.incrementa.bind(this)}>Incrementa</button>
-        <ul>
-          {this.listar()}
-        </ul>
+        {saida}
       </div>
     );
   }
