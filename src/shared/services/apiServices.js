@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Observable } from 'rxjs/Observable'
 
-const contatcsUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/contatos'
+const contatcsUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/contatos';
+const contatcsInsertUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/insere';
 
 // Acess api services.
 class ApiService {
@@ -16,6 +17,13 @@ class ApiService {
       .catch(err => {
         obs.error(err);
       })
+    });
+  }
+
+  // Insert contact
+  static insertContact(contact) {
+    axios.post(contatcsInsertUrl).then(res => {
+      console.log(res.data.status);
     });
   }
 

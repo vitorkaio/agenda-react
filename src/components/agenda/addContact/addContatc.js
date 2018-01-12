@@ -119,8 +119,8 @@ class AddContactComponent extends Component {
       this.setState({name: ""}); // Só para forçar um render.
     }
     else {
-      let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.state.andress, this.state.description);
-      console.log(contact.toJson());
+      let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description);
+      ApiService.insertContact(contact.toJson());
     }
 
     event.preventDefault(); // Impede de submeter o formulário
