@@ -22,8 +22,10 @@ class ApiService {
 
   // Insert contact
   static insertContact(contact) {
-    axios.post(contatcsInsertUrl).then(res => {
-      console.log(res.data.status);
+    return Observable.create(obs => {
+      axios.post(contatcsInsertUrl).then(res => {
+        console.log(res.data.status);
+      });
     });
   }
 
