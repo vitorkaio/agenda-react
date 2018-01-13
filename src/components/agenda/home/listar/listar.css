@@ -5,3 +5,12 @@
   justify-content: center;
   align-items: center;
 }
+
+.itens {
+  margin-top: 1%;
+  display: flex;
+}
+
+.itens > button {
+  margin-left: 5%;
+}

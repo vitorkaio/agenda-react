@@ -5,6 +5,8 @@ import { Input } from 'semantic-ui-react';
 import Rx from 'rxjs/Rx';
 import ApiService from './../../../shared/services/apiServices'
 
+const user_id = '5a58199463898d1a10f584fd';
+
 // Component for insertation of a contact.
 class AddContactComponent extends Component {
 
@@ -19,7 +21,8 @@ class AddContactComponent extends Component {
     this.loadingCEP = false;
     this.entradaRxjs = new Rx.Subject(); // For input CEP.
     this.subscriptionCEP = null;
-    this.subscriptionApiService = null;
+    this.subscriptionApiServiceGetCEP = null;
+    this.subscriptionApiServiceInsertContact = null;
   }
 
   // Após a inicialização do dom.
@@ -42,13 +45,13 @@ class AddContactComponent extends Component {
   getObsCep() {
     let obs = {
       next: (data) =>{
-        this.subscriptionApiService = ApiService.consultaCEP(data).subscribe(this.getObsApiService());
+        this.subscriptionApiServiceGetCEP = ApiService.consultaCEP(data).subscribe(this.getObsApiServiceGetAll());
       },
       error: (err) => {
 
       },
       complete: () =>{
-        this.subscriptionApiService.unsubscribe(); // Unsubscribe of a observable.
+        this.subscriptionApiServiceGetCEP.unsubscribe(); // Unsubscribe of a observable.
       }
     }
 
@@ -56,7 +59,7 @@ class AddContactComponent extends Component {
   }
 
   // Funcs for observables of the api.
-  getObsApiService() {
+  getObsApiServiceGetAll() {
     let obs = {
       next: (data) =>{
         console.log(data.data);
@@ -73,6 +76,26 @@ class AddContactComponent extends Component {
       },
       complete: () =>{
         console.log('Done!');
+      }
+    }
+    return obs;
+  }
+
+  // Funcs for observables of the api.
+  getObsApiServiceInsertContact() {
+    let obs = {
+      next: (res) =>{
+        if(res === true)
+          this.navigateToHome();
+        else
+          console.log('insert contact error -> next');
+      },
+      error: (err) => {
+        console.log('insert contact error -> err: ', err);
+      },
+      complete: () =>{
+        console.log('Done!');
+        this.subscriptionApiServiceInsertContact.unsubscribe();
       }
     }
     return obs;
@@ -119,8 +142,8 @@ class AddContactComponent extends Component {
       this.setState({name: ""}); // Só para forçar um render.
     }
     else {
-      let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description);
-      ApiService.insertContact(contact.toJson());
+      let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id);
+      this.subscriptionApiServiceInsertContact = ApiService.insertContact(contact.toObj()).subscribe(this.getObsApiServiceInsertContact());
     }
 
     event.preventDefault(); // Impede de submeter o formulário
