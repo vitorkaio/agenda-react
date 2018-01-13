@@ -11,6 +11,7 @@ class Contact {
     this.andress = andress;
     this.description = description;
     this.user_id = user_id;
+    this.cep = "";
   }
 
   setId(id) {
@@ -53,6 +54,14 @@ class Contact {
     return this.email;
   }
 
+  setCep(cep) {
+    this.cep = cep;
+  }
+
+  getCep() {
+    return this.cep;
+  }
+
   setCity(city) {
     this.city = city;
   }
@@ -90,6 +99,7 @@ class Contact {
       'name': this.name,
       'tel': this.tel,
       'email': this.email,
+      'cep': this.cep,
       'city': this.city,
       'state': this.state,
       'andress': this.andress,

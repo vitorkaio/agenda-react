@@ -9,7 +9,7 @@ class HomeComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {contacts: []}
+    this.state = {contacts: [], update: false};
     this.lista = [];
     this.subscription = null;
     this.erroServidor = false;
@@ -24,9 +24,14 @@ class HomeComponent extends Component {
     console.log('HomeComponente - DidMount');
   }
 
+  /*componentDidUpdate(prevProps, prevState) {
+    this.subscription.unsubscribe(); // Unsubscribe of a observable.
+    console.log('HomeComponente -  componentDidUpdate');
+  }*/
+
   // After component will be destroyed.
   componentWillUnmount() {
-    this.subscription.unsubscribe(); // Unsubscribe of a observable.
+    //this.subscription.unsubscribe(); // Unsubscribe of a observable.
     console.log('HomeComponente - WillUnmount')
   }
 
@@ -45,7 +50,9 @@ class HomeComponent extends Component {
       },
       complete: () => {
         this.erroServidor = true;
-        this.setState({contacts: this.lista.slice()});
+        this.setState({contacts: this.lista.slice()}, () => {
+          this.subscription.unsubscribe(); // Unsubscribe of a observable.
+        });
       }
     }
     return obs;
@@ -54,6 +61,7 @@ class HomeComponent extends Component {
   goLogin() {
     // Navega para outra rota.
     this.props.history.push("/auth/login");
+    console.log(this.props.history);
   }
 
   goAdicionar() {
@@ -72,14 +80,26 @@ class HomeComponent extends Component {
     return saida;
   }
 
+  // Renders list of contatcs
   renderizaLista() {
     if(this.erroServidor === false)
       return (<h3>Error no servidor - 404</h3>);
     
     return (
-     <ListarComponent itens={this.state.contacts}/>
+     <ListarComponent itens={this.state.contacts} renders={this.updateContatcs.bind(this)} change={this.changeContact.bind(this)}/>
     );
-    
+  }
+
+  // Update list
+  updateContatcs(value) {
+    console.log(value);
+    this.subscription = ApiServer.getAllContacts().subscribe(this.getObsFunctions());
+    this.setState({update: value})
+  }
+
+  // Change contacts
+  changeContact() {
+    this.props.history.push('/agenda/add');
   }
 
   render() {

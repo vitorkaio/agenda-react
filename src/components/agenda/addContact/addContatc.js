@@ -4,6 +4,8 @@ import Contact from './../../../shared/models/contact';
 import { Input } from 'semantic-ui-react';
 import Rx from 'rxjs/Rx';
 import ApiService from './../../../shared/services/apiServices'
+import { connect } from 'react-redux'
+import * as contactActions from './../../../redux/actions/contactActions'
 
 const user_id = '5a58199463898d1a10f584fd';
 
@@ -12,10 +14,26 @@ class AddContactComponent extends Component {
 
   constructor(props) {
     super(props);
-    console.log("AddContactComponent");
-    this.state = {name: "", tel: "", email: "", cep: "", description: "", city: ""};
-    this.estado = "";
-    this.andress = "";
+    console.log("AddContactComponent: ", this.props.contactReducer.contact);
+
+    // Verifica se é para atualizar ou criar um contato.
+    if(this.props.contactReducer.contact == undefined) {
+      this.state = {name: "", tel: "", email: "", cep: "", description: "", city: ""};
+      this.estado = "";
+      this.andress = "";
+    }
+    else {
+      this.state = {
+        name: this.props.contactReducer.contact.name, 
+        tel: this.props.contactReducer.contact.tel, 
+        email: this.props.contactReducer.contact.email, 
+        cep: this.props.contactReducer.contact.cep, 
+        description: this.props.contactReducer.contact.description, 
+        city: this.props.contactReducer.contact.city};
+        this.estado = this.props.contactReducer.contact.state;
+        this.andress = this.props.contactReducer.contact.andress;
+    }
+    
 
     this.nameVazio = false; // Verifica se o name está vazio.
     this.loadingCEP = false;
@@ -38,7 +56,10 @@ class AddContactComponent extends Component {
   // After component will be destroyed.
   componentWillUnmount() {
     this.subscriptionCEP.unsubscribe(); // Unsubscribe of a observable.
-    console.log('AddContactComponente - WillUnmount')
+
+    if(this.props.contactReducer.contact != undefined)
+      this.props.removeContact();
+    console.log('AddContactComponente - WillUnmount, ', this.props.contactReducer.contact)
   }
 
   // Funcs for observables of the cep.
@@ -142,9 +163,18 @@ class AddContactComponent extends Component {
       this.setState({name: ""}); // Só para forçar um render.
     }
     else {
-      let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id);
-      this.subscriptionApiServiceInsertContact = ApiService.insertContact(contact.toObj()).subscribe(this.getObsApiServiceInsertContact());
-    }
+      // se for undefined é pq a operação requisita é um cadastro e não um update.
+      if(this.props.location.state == undefined) {
+        let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id);
+        //this.subscriptionApiServiceInsertContact = ApiService.insertContact(contact.toObj()).subscribe(this.getObsApiServiceInsertContact());
+        console.log(contact.toString());  
+      }
+        else {
+          let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id);
+          contact.setId(this.props.contactReducer.contact.id);
+          console.log(contact.toString());  
+        }      
+      }
 
     event.preventDefault(); // Impede de submeter o formulário
   }
@@ -160,23 +190,23 @@ class AddContactComponent extends Component {
         
         {this.nameVazio === true ? <h5>name está vazio</h5> : null}
         
-        <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' 
+        <Input placeholder='Telefone' type="number" icon='call' value={this.state.tel} iconPosition='left' 
         onChange={this.inputTel.bind(this)} />
 
-        <Input placeholder='Email' type="email" required icon='mail' value={this.state.email} iconPosition='left' 
+        <Input placeholder='Email' type="email" icon='mail' value={this.state.email} iconPosition='left' 
         onChange={this.inputEmail.bind(this)} />
 
         <div className="ceps">
-          <Input placeholder='CEP' type="text" required icon='map' value={this.state.cep} iconPosition='left' 
+          <Input placeholder='CEP' type="text" icon='map' value={this.state.cep} iconPosition='left' 
           onChange={this.inputAndress.bind(this)} />
 
-          <Input placeholder='Cidade' type="text" required icon='map' value={this.state.city} iconPosition='left' 
+          <Input placeholder='Cidade' type="text" icon='map' value={this.state.city} iconPosition='left' 
           disabled />
 
-          <Input placeholder='Estado' type="text" required icon='map' value={this.estado} iconPosition='left' 
+          <Input placeholder='Estado' type="text" icon='map' value={this.estado} iconPosition='left' 
           disabled />
 
-          <Input placeholder='Endereço' type="text" required icon='map' value={this.andress} iconPosition='left' 
+          <Input placeholder='Endereço' type="text" icon='map' value={this.andress} iconPosition='left' 
           disabled />
 
         </div>
@@ -191,6 +221,20 @@ class AddContactComponent extends Component {
       </div>
     );
   }
+}// end component
+
+const mapStateToProps = (state) => {
+  return {
+    contactReducer: state.contactReducer
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeContact: () => {
+      dispatch(contactActions.removeContact())
+    }
+  }
 }
 
-export default AddContactComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(AddContactComponent);

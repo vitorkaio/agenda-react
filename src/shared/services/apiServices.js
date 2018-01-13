@@ -42,8 +42,14 @@ class ApiService {
 
   // Delete one contact
   static deleteContact(id) {
-    axios.delete(contatcsDeletetUrl + id).then(res => {
-      console.log(res);
+    return Observable.create(obs => {
+      axios.delete(contatcsDeletetUrl + id).then(res => {
+        if(res.data.status === true)
+          obs.next(true);
+        else
+          obs.next(false);
+        obs.complete();
+      }).catch(err => {obs.error(err)});
     });
   }
 

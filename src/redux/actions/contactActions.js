@@ -1,13 +1,13 @@
 export function insertContact(contact){
   return {
-    type: 'ADD_CONCTACS',
+    type: 'ADD_CONCTAC',
     payload: contact
   }
 }
 
-export function insertList(list){
+export function removeContact(list){
   return {
-    type: 'INSERT_CONTACTS',
-    payload: list
+    type: 'REMOVE_CONCTACT',
+    payload: undefined
   }
 }

@@ -1,35 +1,34 @@
-import FakeServer from './../../shared/services/fakeServer'
 
-const fakeServer = new FakeServer();
+let contact = {
+  'id': undefined,
+  'name': undefined,
+  'tel': undefined,
+  'email': undefined,
+  'cep': undefined,
+  'city': undefined,
+  'state': undefined,
+  'andress': undefined,
+  'description': undefined,
+  'user_id': undefined
 
-let modeloInicial = {
-  listContacts: fakeServer.getList()
-}
+  };
 
-const contactReducer = (state = modeloInicial, action) => {
+const contactReducer = (state = contact, action) => {
   switch (action.type) {
-    case 'ADD_CONCTACS':
-      fakeServer.pushContact(action.payload);
+    case 'ADD_CONCTAC':
       state = {
         ...state,
-        listContacts: fakeServer.getList()
+        contact: action.payload
       }
       break;
 
-    case 'POP_CONCTACT':
+    case 'REMOVE_CONCTACT':
       state = {
         ...state,
-        listContacts: action.payload 
+        contact: action.payload 
       }
     break;
 
-    case 'INSERT_CONTACTS':
-      state = {
-        ...state,
-        listContacts: action.payload
-      }
-    break;
-  
     default:
       break;
   }

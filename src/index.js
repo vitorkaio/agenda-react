@@ -10,10 +10,10 @@ import { Provider } from 'react-redux';
 
 let user = {user: 'Vih', email: 'vih@email.com'};
 
-store.dispatch({
-  type: 'ADD_USER',
-  payload: user
-})
+/*store.dispatch({
+  type: 'REMOVE_CONTACT',
+  payload: null
+})*/
 
 //console.log(store.getState().userReducer.user);
 
