@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable'
 const contatcsUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/contatos';
 const contatcsInsertUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/insere';
 const contatcsDeletetUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/delete/';
+const contatcsUpdateUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/update/';
 // const user_id = '5a58199463898d1a10f584fd';
 
 // Acess api services.
@@ -39,6 +40,25 @@ class ApiService {
       });
     });
   }
+
+    // Update contact
+    static updateContact(contact) {
+      console.log(contact);
+      return Observable.create(obs => {
+        axios.put(contatcsUpdateUrl + contact['_id'], contact).then(res => {
+          console.log(res.data.status);
+          if(res.data.status === true) {
+            obs.next(true);
+            obs.complete();
+          }
+          else {
+            obs.next(false);
+          }
+        }).catch(err => {
+          obs.error(false);
+        });
+      });
+    }
 
   // Delete one contact
   static deleteContact(id) {

@@ -18,23 +18,16 @@ class HomeComponent extends Component {
     
   }
 
-  // Calling befeore components is render.
+  // É chamado antes do componente ser renderizado.
   componentWillMount() {
-    this.subscription = ApiServer.getAllContacts().subscribe(this.getObsFunctions());
-    console.log('HomeComponente - DidMount');
+    this.subscription = ApiServer.getAllContacts().subscribe(this.getObsFunctions()); // Pegando os contatos da api.
+    console.log('HomeComponente - WillMount');
   }
-
-  /*componentDidUpdate(prevProps, prevState) {
-    this.subscription.unsubscribe(); // Unsubscribe of a observable.
-    console.log('HomeComponente -  componentDidUpdate');
-  }*/
 
   // After component will be destroyed.
-  componentWillUnmount() {
-    //this.subscription.unsubscribe(); // Unsubscribe of a observable.
-    console.log('HomeComponente - WillUnmount')
-  }
+  //componentWillUnmount() {}
 
+  // Retorna as funções que o Obeservable irá utilizar para pegar os contatos.
   getObsFunctions() {
     let obs = {
         next: (next) => {
@@ -58,26 +51,16 @@ class HomeComponent extends Component {
     return obs;
   }
 
+  // Navega para o login.
   goLogin() {
     // Navega para outra rota.
     this.props.history.push("/auth/login");
     console.log(this.props.history);
   }
 
+  // Navega para a página de add contato.
   goAdicionar() {
     this.props.history.push("/agenda/add");
-  }
-
-  incrementa() {
-    //this.props.pushContact(Math.floor((Math.random() * 1000) + 1));
-  }
-
-  listar() {
-    console.log('listar(): ', this.state.contacts);
-    let saida = [];
-    for(let x = 0; x < this.state.contacts.length; x++)
-      saida.push(<li key={x}>{this.state.contacts[x].name}</li>);
-    return saida;
   }
 
   // Renders list of contatcs
@@ -97,7 +80,7 @@ class HomeComponent extends Component {
     this.setState({update: value})
   }
 
-  // Change contacts
+  // Vai para a página de add contato com os dados vindo do redux.
   changeContact() {
     this.props.history.push('/agenda/add');
   }
@@ -109,7 +92,6 @@ class HomeComponent extends Component {
       <div>
         <button onClick={this.goLogin.bind(this)}>Login</button>
         <button onClick={this.goAdicionar.bind(this)}>Adicionar Contato</button>
-        <button onClick={this.incrementa.bind(this)}>Incrementa</button>
         {saida}
       </div>
     );

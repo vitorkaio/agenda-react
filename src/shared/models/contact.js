@@ -1,8 +1,8 @@
 // Class for abstraction of propertys of a Contact person.
 class Contact {
   
-  constructor(name, tel, email, andress, city, state, description, user_id) {
-    this.id = '';
+  constructor(name, tel, email, andress, city, state, description, user_id, cep) {
+    this._id = '';
     this.name = name;
     this.tel = tel;
     this.email = email;
@@ -11,15 +11,15 @@ class Contact {
     this.andress = andress;
     this.description = description;
     this.user_id = user_id;
-    this.cep = "";
+    this.cep = cep;
   }
 
-  setId(id) {
-    this.id = id;
+  setId(_id) {
+    this._id = _id;
   }
 
   getId() {
-    return this.id;
+    return this._id;
   }
 
   setUserId(user_id) {
@@ -91,11 +91,12 @@ class Contact {
   }
 
   toString() {
-    return `\nId: ${this.id}\nName: ${this.name}\nTel: ${this.tel}\nEmail: ${this.email}\nCity: ${this.city}\nState: ${this.state}\nAndress: ${this.andress}\nDescription: ${this.description}`;
+    return `\nId: ${this._id}\nName: ${this.name}\nTel: ${this.tel}\nEmail: ${this.email}\nCity: ${this.city}\nState: ${this.state}\nAndress: ${this.andress}\nDescription: ${this.description}`;
   }
 
   toObj() {
     let objson = {
+      '_id': this._id,
       'name': this.name,
       'tel': this.tel,
       'email': this.email,

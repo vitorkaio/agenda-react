@@ -17,7 +17,7 @@ class AddContactComponent extends Component {
     console.log("AddContactComponent: ", this.props.contactReducer.contact);
 
     // Verifica se é para atualizar ou criar um contato.
-    if(this.props.contactReducer.contact == undefined) {
+    if(this.props.contactReducer.contact === undefined) {
       this.state = {name: "", tel: "", email: "", cep: "", description: "", city: ""};
       this.estado = "";
       this.andress = "";
@@ -35,12 +35,14 @@ class AddContactComponent extends Component {
     }
     
 
-    this.nameVazio = false; // Verifica se o name está vazio.
+    this.telVazio = false; // Verifica se o name está vazio.
     this.loadingCEP = false;
     this.entradaRxjs = new Rx.Subject(); // For input CEP.
+    
     this.subscriptionCEP = null;
     this.subscriptionApiServiceGetCEP = null;
     this.subscriptionApiServiceInsertContact = null;
+    this.subscriptionApiServiceUpdateContact = null;
   }
 
   // Após a inicialização do dom.
@@ -57,7 +59,7 @@ class AddContactComponent extends Component {
   componentWillUnmount() {
     this.subscriptionCEP.unsubscribe(); // Unsubscribe of a observable.
 
-    if(this.props.contactReducer.contact != undefined)
+    if(this.props.contactReducer.contact !== undefined)
       this.props.removeContact();
     console.log('AddContactComponente - WillUnmount, ', this.props.contactReducer.contact)
   }
@@ -122,6 +124,26 @@ class AddContactComponent extends Component {
     return obs;
   }
 
+  // Funcs for observables of the api.
+  getObsApiServiceUpdateContact() {
+    let obs = {
+      next: (res) =>{
+        if(res === true)
+          this.navigateToHome();
+        else
+          console.log('update contact error -> next');
+      },
+      error: (err) => {
+        console.log('update contact error -> err: ', err);
+      },
+      complete: () =>{
+        console.log('Done!');
+        this.subscriptionApiServiceUpdateContact.unsubscribe();
+      }
+    }
+    return obs;
+  }
+
   // Navigate for HomeComponent.
   navigateToHome() {
     this.props.history.push("/agenda/home");
@@ -130,7 +152,7 @@ class AddContactComponent extends Component {
   // Inserts value of name input in name state value.
   inputName(e) {
     this.setState({name: e.target.value});
-    this.nameVazio = false;
+    this.telVazio = false;
   }
 
   // Inserts value of tel input in tel state value.
@@ -157,22 +179,21 @@ class AddContactComponent extends Component {
   
   // Submit data.
   submit(event) {
-    if(this.state.name.length === 0) {
+    if(this.state.tel.length === 0) {
       event.preventDefault(); // Impede de submeter o formulário
-      this.nameVazio = true;
+      this.telVazio = true;
       this.setState({name: ""}); // Só para forçar um render.
     }
     else {
       // se for undefined é pq a operação requisita é um cadastro e não um update.
-      if(this.props.location.state == undefined) {
-        let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id);
-        //this.subscriptionApiServiceInsertContact = ApiService.insertContact(contact.toObj()).subscribe(this.getObsApiServiceInsertContact());
-        console.log(contact.toString());  
+      if(this.props.contactReducer.contact === undefined) {
+        let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id, this.state.cep);
+        this.subscriptionApiServiceInsertContact = ApiService.insertContact(contact.toObj()).subscribe(this.getObsApiServiceInsertContact());
       }
         else {
-          let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id);
-          contact.setId(this.props.contactReducer.contact.id);
-          console.log(contact.toString());  
+          let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id, this.state.cep);
+          contact.setId(this.props.contactReducer.contact._id);
+          this.subscriptionApiServiceUpdateContact = ApiService.updateContact(contact.toObj()).subscribe(this.getObsApiServiceUpdateContact());
         }      
       }
 
@@ -188,10 +209,10 @@ class AddContactComponent extends Component {
         <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left'
         onChange={this.inputName.bind(this)} />
         
-        {this.nameVazio === true ? <h5>name está vazio</h5> : null}
-        
-        <Input placeholder='Telefone' type="number" icon='call' value={this.state.tel} iconPosition='left' 
+        <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' 
         onChange={this.inputTel.bind(this)} />
+
+        {this.telVazio === true ? <h5>Telefone está vazio</h5> : null}
 
         <Input placeholder='Email' type="email" icon='mail' value={this.state.email} iconPosition='left' 
         onChange={this.inputEmail.bind(this)} />

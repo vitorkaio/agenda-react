@@ -1,0 +1,9 @@
+.icone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ops {
+  margin-right: 35%;
+}

@@ -14,11 +14,12 @@ class ListarComponent extends Component {
     this.subscriptionDeleteItem = null;
   }
 
+  // Metódo que retorna as funções que o Obersavable irá utilizar.
   getObsDeleteItem() {
     let obs = {
         next: (next) => {
           if(next === true){
-           this.props.renders(true);
+           this.props.renders(true); // Avisa o HomeComponent que ele precisa atualizar a lista.
           }
           else
             console.log("Não foi possível deletar");
@@ -41,8 +42,8 @@ class ListarComponent extends Component {
 
   // Update a contact.
   updateItem(item) {
-   this.props.change();
-   this.props.insereContatct(item);
+    this.props.insereContatct(item);
+    this.props.change(); // Envia um sinal para o HomeComponent para ir pra url de cadastro. history.push não funciona aqui.
   }
 
   // Generate list of contacts
@@ -53,7 +54,7 @@ class ListarComponent extends Component {
         <div key={x} className="itens">
           <div>{this.props.itens[x].name}</div>
           <button onClick={() => {this.updateItem(this.props.itens[x])}}>Alterar</button>
-          <button onClick={() => {this.deleteItem(this.props.itens[x].id)}}>Deletar</button>
+          <button onClick={() => {this.deleteItem(this.props.itens[x]._id)}}>Deletar</button>
         </div>
       );
     }
@@ -69,6 +70,8 @@ class ListarComponent extends Component {
     );
   }
 } // End component.
+
+// *************************************** Connect Redux ***************************************
 
 const mapStateToProps = (state) => {
   return {
