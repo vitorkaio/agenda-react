@@ -12,6 +12,10 @@ class ListarComponent extends Component {
     super(props);
     this.state = {deleted: false};
     this.subscriptionDeleteItem = null;
+    
+    // Remove contato do redux-persist.
+    if(this.props.contactReducer === undefined)
+      this.props.removeContact();
   }
 
   // Metódo que retorna as funções que o Obersavable irá utilizar.
@@ -43,7 +47,7 @@ class ListarComponent extends Component {
   // Update a contact.
   updateItem(item) {
     this.props.insereContatct(item);
-    this.props.change(); // Envia um sinal para o HomeComponent para ir pra url de cadastro. history.push não funciona aqui.
+    this.props.change.push('/agenda/add');
   }
 
   // Generate list of contacts
@@ -83,6 +87,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     insereContatct: (contact) => {
       dispatch(contactActions.insertContact(contact))
+    },
+    removeContact: () => {
+      dispatch(contactActions.removeContact())
     }
   }
 }

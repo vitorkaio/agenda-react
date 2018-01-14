@@ -1,5 +1,5 @@
 let modeloInicial = {
-  user: {}
+  user: null
 }
 
 const userReducer = (state = modeloInicial, action) => {
@@ -7,7 +7,7 @@ const userReducer = (state = modeloInicial, action) => {
     case 'ADD_USER':
       state = {
         ...state,
-        user: [...state.user, action.payload]
+        user: action.payload
       }
       break;
 

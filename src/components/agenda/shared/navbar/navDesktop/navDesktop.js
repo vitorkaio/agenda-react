@@ -1,50 +1,75 @@
 import React, { Component } from 'react';
 import './navDesktop.css'
-import { Menu, Button } from 'semantic-ui-react';
+//import { Menu, Button } from 'semantic-ui-react';
 import logo from './../../../../../logo.svg';
+
+// import { Link } from 'react-router-dom'
 
 class NavbarDesktopComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {activeItem: 'home'};
+
+    const urlAtual = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
+    //this.state = {activeItem: urlAtual};
+    this.itemAtivado = urlAtual;
+    //console.log('NavbarDesktopComponent');
+    //console.log(this.props.userReducer.user);
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
+  ativaItem(event) {
+    this.itemAtivado = event.target.id
+      if(this.itemAtivado === "home")
+        this.props.navbarProps.rotaProps.push('/agenda/home');
+      
+      else if (this.itemAtivado === "add")
+        this.props.navbarProps.rotaProps.push('/agenda/add');
+
+      else if (this.itemAtivado === "info")
+        this.props.navbarProps.rotaProps.push('/auth/register');
+
+      else if (this.itemAtivado === "sair")
+        this.props.navbarProps.rotaProps.push('/auth/login');
+        
+   
+  }
+
+  /*componentDidUpdate() {
+    this.setState({activeItem: this.props.navbarProps.rotaProps.location.pathname.split("/").pop()});
+  }*/
+
   render() {
-    const { activeItem } = this.state
+    console.log('NavbarDesktopComponent - Renderizado');
+    const rotaAtual = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
+    this.itemAtivado = rotaAtual === this.itemAtivado ? this.itemAtivado : rotaAtual;
+
     return (
-      <Menu className="navs">
-      <Menu.Item className="icone">
-        <img src={logo} />
-      </Menu.Item>
-      <Menu.Item name='home' 
-       color={activeItem === 'home' ? "red" : "black"} active={activeItem === 'home'} 
-       onClick={this.handleItemClick}>
-        Home
-      </Menu.Item>
+      <nav className="navs">
+        <div className="rotas">
 
-      <Menu.Item name='add' 
-       color={activeItem === 'add' ? "red" : "black"}
-       active={activeItem === 'add'} onClick={this.handleItemClick}>
-        Adicionar
-      </Menu.Item>
+          <div id="home" className={this.itemAtivado === "home" ? "marcado" : null}
+          onClick={this.ativaItem.bind(this)}>Home</div>
+          
+          <div id="add" className={this.itemAtivado === "add" ? "marcado" : null}
+          onClick={this.ativaItem.bind(this)}>Adicionar</div>
 
-      <Menu.Menu position='right'>
-        <Menu.Item name='info'  
-         color={activeItem === 'info' ? "blue" : "black"}
-         active={activeItem === 'info'} onClick={this.handleItemClick}>
-         Info
-        </Menu.Item>
+        </div>
 
-        <Menu.Item name='sair'
-        color={activeItem === 'sair' ? "blue" : "black"}
-         active={activeItem === 'sair'} onClick={this.handleItemClick}>
-         <Button primary>Sign up</Button>
-        </Menu.Item>
-      </Menu.Menu>
-    </Menu>
+        <div className="icone"><img src={logo} width="50" height="50" alt="icone"/></div>
+
+        <div className="ops">
+
+          <div id="info" className={this.itemAtivado === "info" ? "marcado" : null}
+          onClick={this.ativaItem.bind(this)}>Info</div>
+
+
+          <div id="sair" className={this.itemAtivado === "sair" ? "marcado" : null}
+          onClick={this.ativaItem.bind(this)}>Sair</div>
+
+        </div>
+    </nav>
     );
   }
 }

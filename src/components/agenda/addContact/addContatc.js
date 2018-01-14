@@ -14,7 +14,7 @@ class AddContactComponent extends Component {
 
   constructor(props) {
     super(props);
-    console.log("AddContactComponent: ", this.props.contactReducer.contact);
+    // console.log("AddContactComponent: ", this.props.contactReducer.contact);
 
     // Verifica se é para atualizar ou criar um contato.
     if(this.props.contactReducer.contact === undefined) {
@@ -58,10 +58,7 @@ class AddContactComponent extends Component {
   // After component will be destroyed.
   componentWillUnmount() {
     this.subscriptionCEP.unsubscribe(); // Unsubscribe of a observable.
-
-    if(this.props.contactReducer.contact !== undefined)
-      this.props.removeContact();
-    console.log('AddContactComponente - WillUnmount, ', this.props.contactReducer.contact)
+    //console.log('AddContactComponente - WillUnmount, ', this.props.contactReducer.contact)
   }
 
   // Funcs for observables of the cep.
@@ -146,6 +143,7 @@ class AddContactComponent extends Component {
 
   // Navigate for HomeComponent.
   navigateToHome() {
+    //this.props.addUser("HOME")
     this.props.history.push("/agenda/home");
   }
 
@@ -201,7 +199,7 @@ class AddContactComponent extends Component {
   }
 
   render() {
-    console.log("Renderizando formulário");
+    console.log("AddContatctComponent - Renderizado");
     return (
       <div className="adicionar">
         <form onSubmit={this.submit.bind(this)}>

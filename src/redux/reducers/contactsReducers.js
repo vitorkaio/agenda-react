@@ -1,17 +1,5 @@
 
-let contact = {
-  '_id': undefined,
-  'name': undefined,
-  'tel': undefined,
-  'email': undefined,
-  'cep': undefined,
-  'city': undefined,
-  'state': undefined,
-  'andress': undefined,
-  'description': undefined,
-  'user_id': undefined
-
-  };
+let contact = {};
 
 const contactReducer = (state = contact, action) => {
   switch (action.type) {

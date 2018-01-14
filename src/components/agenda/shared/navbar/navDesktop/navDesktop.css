@@ -1,9 +1,65 @@
+.navs {
+  border: solid LightGrey;
+  border-width: 0px 0px 1px 0px;
+  
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+  height: 55px;
+  padding: 1px 10px 3px 10px;
+}
+
+.rotas {
+  display: flex;
+  justify-content: space-between;
+  width: 210px;
+}
+
+.rotas > div {
+  color: black;
+  font-weight: bold;
+  
+  width: 80px;
+  padding: 5px 10px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1px;
+}
+
+.rotas > div:hover {
+  background-color: LightGrey;
+  color: black;
+}
+
 .icone {
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .ops {
-  margin-right: 35%;
+  display: flex;
+  justify-content: space-between;
+  width: 210px;
 }
+
+.ops > div {
+  color: black;
+  font-weight: bold;
+  
+  width: 80px;
+  padding: 5px 10px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1px;
+}
+
+.ops > div:hover {
+  background-color: LightGrey;
+  color: black;
+}
+
+.marcado {
+  border: solid black;
+  border-width: 0px 0px 1px 0px;
+}
+
