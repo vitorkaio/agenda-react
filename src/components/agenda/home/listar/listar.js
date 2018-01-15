@@ -50,10 +50,6 @@ class ListarComponent extends Component {
     this.props.change.push('/agenda/add');
   }
 
-  info() {
-    console.log("**** Info ****");
-  }
-
   // Generate list of contacts
   generateList() {
     let saida = [];

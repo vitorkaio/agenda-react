@@ -3,6 +3,8 @@ import './home.css';
 import ApiServer from './../../../shared/services/apiServices'
 import ListarComponent from './listar/listar'
 
+import { Icon, Input } from 'semantic-ui-react';
+
 // import { Link } from 'react-router-dom'
 
 class HomeComponent extends Component {
@@ -54,7 +56,7 @@ class HomeComponent extends Component {
   // Renders list of contatcs
   renderizaLista() {
     if(this.erroServidor === false)
-      return (<h3>Error no servidor - 404</h3>);
+      return (<div> <Icon loading name='spinner' size="huge"/> </div>);
     
     return (
      <ListarComponent itens={this.state.contacts} renders={this.updateContatcs.bind(this)} change={this.props.history}/>
@@ -70,9 +72,11 @@ class HomeComponent extends Component {
 
   render() {
     console.log('HomeComponente - Rendenrizado');
-    const saida = this.renderizaLista();
+    const saida = this.renderizaLista(); // Renderiza a lista se ela existir.
+    const loadSpinner = this.state.contacts.length; // Se a lista tiver vazia, mostra um spinner de load.
     return (
-      <div>
+      <div className={loadSpinner === 0 ? "loadSpiner" : "listagem"}>
+        {loadSpinner === 0 ? null : <Input className="pesquisa" loading icon='user' placeholder='Search...' />}
         {saida}
       </div>
     );

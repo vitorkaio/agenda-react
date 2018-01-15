@@ -1,0 +1,34 @@
+.listagem {
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.loadSpiner {
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pesquisa {
+  margin-top: 5%;
+  width: 400px;
+}
+
+/* Quando a tela for maior que 900px */
+@media screen and (min-width: 900px) {
+  .pesquisa {
+    margin-top: 2%;
+  }
+}
+
+/* Quando a tela for menor que 612px */
+@media screen and (max-width: 612px) {
+  .pesquisa {
+    width: 80%;
+  }
+}
