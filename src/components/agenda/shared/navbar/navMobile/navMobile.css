@@ -1,0 +1,33 @@
+.navsMobile {
+  border: solid LightGrey;
+  border-width: 0px 0px 1px 0px;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  height: 50px;
+  padding: 1px 10px 3px 10px;
+}
+
+.pathMobile {
+  font-weight: bold;
+  color: black;
+  font-size: 15px;
+  width: 4%;
+}
+
+.sidebarMobile {
+  margin: 3% 3%;
+  overflow-y: hidden !important;
+}
+
+.sidebarContentMobile {
+  background-color: white;
+  width: 200px;
+}
+
+.root {
+  width: 15%;
+  margin: 3% 3%;
+}

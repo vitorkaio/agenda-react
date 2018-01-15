@@ -7,10 +7,10 @@
 }
 
 .itens {
-  margin-top: 1%;
+  margin-top: 5%;
   display: flex;
 }
 
-.itens > button {
+#mybutoes {
   margin-left: 5%;
 }

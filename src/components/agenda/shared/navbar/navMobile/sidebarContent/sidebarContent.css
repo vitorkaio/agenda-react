@@ -1,0 +1,24 @@
+.conteudoSideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  color: gray;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.conteudoSideBar > div {
+  margin: 7% 3%;
+
+  display: flex;
+  justify-content: flex-start;
+}
+
+.conteudoSideBar > div > span {
+  margin-left: 8%;
+}
+
+.marcadoMobile {
+  color: black;
+}

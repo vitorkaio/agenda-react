@@ -4,7 +4,7 @@ import ApiService from './../../../../shared/services/apiServices';
 import { connect } from 'react-redux'
 import * as contactActions from './../../../../redux/actions/contactActions'
 
-// import { Link } from 'react-router-dom'
+import { Button } from 'semantic-ui-react';
 
 class ListarComponent extends Component {
 
@@ -50,6 +50,10 @@ class ListarComponent extends Component {
     this.props.change.push('/agenda/add');
   }
 
+  info() {
+    console.log("**** Info ****");
+  }
+
   // Generate list of contacts
   generateList() {
     let saida = [];
@@ -57,8 +61,8 @@ class ListarComponent extends Component {
       saida.push(
         <div key={x} className="itens">
           <div>{this.props.itens[x].name}</div>
-          <button onClick={() => {this.updateItem(this.props.itens[x])}}>Alterar</button>
-          <button onClick={() => {this.deleteItem(this.props.itens[x]._id)}}>Deletar</button>
+          <Button id="mybutoes" onClick={() => {this.updateItem(this.props.itens[x])}}>Alterar</Button>
+          <Button id="mybutoes" onClick={() => {this.deleteItem(this.props.itens[x]._id)}}>Deletar</Button>
         </div>
       );
     }

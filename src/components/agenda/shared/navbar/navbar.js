@@ -24,7 +24,7 @@ class NavbarComponent extends Component {
 
   render() {
     //console.log("Navbar - render");
-    const nav = this.state.larguraTela >= 612 ? <NavbarDesktopComponent navbarProps={this.props}/> : <NavbarMobileComponent/>
+    const nav = this.state.larguraTela >= 612 ? <NavbarDesktopComponent navbarProps={this.props}/> : <NavbarMobileComponent navbarProps={this.props}/>
     return (
         <div>
           {nav}
