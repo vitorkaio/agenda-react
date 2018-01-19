@@ -45,6 +45,11 @@
   font-weight: bold;
 }
 
+.nome-item:hover {
+  color: cornflowerblue;
+  cursor: pointer;
+}
+
 .telefone-lista {
   margin-top: 6%;
   margin-left: 2%;
