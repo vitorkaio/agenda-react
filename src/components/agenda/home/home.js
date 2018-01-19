@@ -110,7 +110,11 @@ class HomeComponent extends Component {
 
   // Deleta um contato.
   deletaContato(contato) {
-    this.subscriptionDeleteItem = ApiService.deleteContact(contato._id).subscribe(this.getObsDeleteItem());
+    const isDelete = window.confirm("Tem certeza que deseja deletar?");
+    if(isDelete === true) {
+      this.subscriptionDeleteItem = ApiService.deleteContact(contato._id).subscribe(this.getObsDeleteItem());
+      this.setState({openInfo: false});
+    }
   }
 
   // Altera um Contato.
@@ -143,7 +147,7 @@ class HomeComponent extends Component {
     const loadSpinner = this.auxLista.length; // Se a lista tiver vazia, mostra um spinner de load.
     return (
        <div>
-        {this.state.openInfo ? <InfoComponent contatoInfo={this.contato} fechaInfo={this.info.bind(this)}/> : 
+        {this.state.openInfo ? <InfoComponent contatoInfo={this.contato} fechaInfo={this.info.bind(this)} deletaContato={this.deletaContato.bind(this)}/> : 
           <div className={loadSpinner === 0 ? "loadSpiner" : "listagem"}>
             {loadSpinner === 0 ? null : <Input className="pesquisa" loading icon='user' placeholder='Pesquisar...' 
             onChange={this.pesquisaFiltraContatos.bind(this)} />}
