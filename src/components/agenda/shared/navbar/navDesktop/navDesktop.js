@@ -38,7 +38,7 @@ class NavbarDesktopComponent extends Component {
   }*/
 
   render() {
-    console.log('NavbarDesktopComponent - Renderizado');
+    // console.log('NavbarDesktopComponent - Renderizado');
     const rotaAtual = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
     this.itemAtivado = rotaAtual === this.itemAtivado ? this.itemAtivado : rotaAtual;
 

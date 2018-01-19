@@ -58,7 +58,7 @@ class AddContactComponent extends Component {
   // After component will be destroyed.
   componentWillUnmount() {
     this.subscriptionCEP.unsubscribe(); // Unsubscribe of a observable.
-    //console.log('AddContactComponente - WillUnmount, ', this.props.contactReducer.contact)
+    // console.log('AddContactComponente - WillUnmount');
   }
 
   // Funcs for observables of the cep.
@@ -143,7 +143,8 @@ class AddContactComponent extends Component {
 
   // Navigate for HomeComponent.
   navigateToHome() {
-    //this.props.addUser("HOME")
+    //this.props.addUser("HOME");
+    this.props.removeContact();
     this.props.history.push("/agenda/home");
   }
 

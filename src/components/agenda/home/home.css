@@ -1,9 +1,9 @@
 .listagem {
-  height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
 }
 
 .loadSpiner {
@@ -12,11 +12,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 1s ease-out forwards; /* Animação de entrada. */
+
 }
 
 .pesquisa {
   margin-top: 5%;
   width: 400px;
+  animation: bounceIn 2.0s ease-out forwards; /* Animação de entrada. */
 }
 
 /* Quando a tela for maior que 900px */

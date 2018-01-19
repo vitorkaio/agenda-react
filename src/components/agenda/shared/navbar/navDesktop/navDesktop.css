@@ -53,6 +53,7 @@
 .hovs:hover {
   background-color: LightGrey;
   color: black;
+  animation: pulse 2s ease-in-out forwards infinite;
 }
 
 .marcado {
