@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './info.css'
-import { Button, Divider, Icon } from 'semantic-ui-react';
+import { Button, Divider, Icon, Popup } from 'semantic-ui-react';
 
 class InfoComponent extends Component {
 
@@ -17,6 +17,11 @@ class InfoComponent extends Component {
   deleta() {
     this.props.deletaContato(this.props.contatoInfo);
     //this.fechaInfo(null);
+  }
+
+  // Altera o contato.
+  alteraContato() {
+    this.props.alteraContato(this.props.contatoInfo);
   }
 
   render() {
@@ -37,9 +42,40 @@ class InfoComponent extends Component {
         </div>
         <div className="comentario-contato"><Icon name="comments"/> {this.props.contatoInfo.description}</div>
         <div className="acoes-contato">
-          <Button id="butoes-contato" color='black' onClick={this.fechaInfo.bind(this)}>Voltar</Button>
-          <Button id="butoes-contato" color='black'>Alterar</Button>
-          <Button id="butoes-contato" color='red' onClick={this.deleta.bind(this)}>Deletar</Button>
+
+          <Popup
+            trigger={
+              <Button id="butoes-contato" color='black' icon onClick={this.fechaInfo.bind(this)}>
+                <Icon name='left arrow' />
+              </Button>
+            }
+            content='Voltar para o Home'
+            inverted
+            position='top center'
+          />
+
+          <Popup
+            trigger={
+              <Button id="butoes-contato" color='black' icon onClick={this.alteraContato.bind(this)}>
+                <Icon name='edit' />
+              </Button>
+            }
+            content='Editar o contato'
+            inverted
+            position='top center'
+          />
+
+          <Popup
+            trigger={
+              <Button id="butoes-contato" color='red' icon onClick={this.deleta.bind(this)}>
+                <Icon name='delete' />
+              </Button>
+            }
+            content='Deleta o contato'
+            inverted
+            position='top center'
+          />
+
         </div>
       </div>
     );

@@ -7,21 +7,16 @@ import NavbarComponent from './shared/navbar/navbar'
 
 // Define as rotas para os componentes de autenticação.
 
-class AgendaRouter extends Component {
-
-  render() {
-    return (
-      <div>
-        <NavbarComponent rotaProps={this.props.history}/>
-        <Switch>
-          <Route exact path='/agenda/home' component={HomeComponent}/>
-          <Route exact path='/agenda/add' component={AddContactComponent}/>
-          <Redirect to="/agenda/home" />
-        </Switch>
-      </div>  
+const AgendaRouter = (props) => (
+  <div>
+    <NavbarComponent rotaProps={props.history}/>
+    <Switch>
+      <Route exact path='/agenda/home' component={HomeComponent}/>
+      <Route exact path='/agenda/add' component={AddContactComponent}/>
+      <Redirect to="/agenda/home" />
+    </Switch>
+  </div>
   
-    );
-  }
-}
+);
 
 export default AgendaRouter

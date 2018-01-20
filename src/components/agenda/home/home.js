@@ -147,9 +147,13 @@ class HomeComponent extends Component {
     const loadSpinner = this.auxLista.length; // Se a lista tiver vazia, mostra um spinner de load.
     return (
        <div>
-        {this.state.openInfo ? <InfoComponent contatoInfo={this.contato} fechaInfo={this.info.bind(this)} deletaContato={this.deletaContato.bind(this)}/> : 
+        {this.state.openInfo 
+          ? 
+          <InfoComponent contatoInfo={this.contato} fechaInfo={this.info.bind(this)}
+          deletaContato={this.deletaContato.bind(this)} alteraContato={this.alteraContato.bind(this)} /> 
+          : 
           <div className={loadSpinner === 0 ? "loadSpiner" : "listagem"}>
-            {loadSpinner === 0 ? null : <Input className="pesquisa" loading icon='user' placeholder='Pesquisar...' 
+            {loadSpinner === 0 ? null : <Input className="pesquisa" icon='search' placeholder='Pesquisar...' 
             onChange={this.pesquisaFiltraContatos.bind(this)} />}
             {saida}
           </div>}

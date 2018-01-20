@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './addContact.css';
 import Contact from './../../../shared/models/contact';
-import { Input } from 'semantic-ui-react';
+import { Input, TextArea, Button, Icon } from 'semantic-ui-react';
 import Rx from 'rxjs/Rx';
 import ApiService from './../../../shared/services/apiServices'
 import { connect } from 'react-redux'
@@ -204,40 +204,63 @@ class AddContactComponent extends Component {
     return (
       <div className="adicionar">
         <form onSubmit={this.submit.bind(this)}>
-          
-        <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left'
-        onChange={this.inputName.bind(this)} />
         
-        <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' 
-        onChange={this.inputTel.bind(this)} />
+        <div id="input-contato">
+          <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left' fluid
+            onChange={this.inputName.bind(this)} />
+        </div>
+        
+        <div id="input-contato">
+          <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' fluid
+          onChange={this.inputTel.bind(this)} />
+        </div>
 
         {this.telVazio === true ? <h5>Telefone está vazio</h5> : null}
 
-        <Input placeholder='Email' type="email" icon='mail' value={this.state.email} iconPosition='left' 
-        onChange={this.inputEmail.bind(this)} />
+        <div id="input-contato">
+          <Input placeholder='Email' type="email" icon='mail' value={this.state.email} iconPosition='left' fluid
+          onChange={this.inputEmail.bind(this)} />
+        </div>
+
+        <div id="input-contato">
+          <Input placeholder='CEP' type="text" icon='search' value={this.state.cep} fluid
+          onChange={this.inputAndress.bind(this)} />
+        </div>
 
         <div className="ceps">
-          <Input placeholder='CEP' type="text" icon='map' value={this.state.cep} iconPosition='left' 
-          onChange={this.inputAndress.bind(this)} />
 
-          <Input placeholder='Cidade' type="text" icon='map' value={this.state.city} iconPosition='left' 
-          disabled />
+          <div id="input-cep-cidade">
+            <Input placeholder='Cidade' type="text" icon='building' value={this.state.city} iconPosition='left' fluid
+            disabled />
+          </div>
 
-          <Input placeholder='Estado' type="text" icon='map' value={this.estado} iconPosition='left' 
-          disabled />
+          <div id="input-cep-estado">
+            <Input placeholder='Estado' type="text" icon='map' value={this.estado} iconPosition='left' fluid
+            disabled />
+          </div>
 
-          <Input placeholder='Endereço' type="text" icon='map' value={this.andress} iconPosition='left' 
-          disabled />
+          <div id="input-cep-endereco">
+            <Input placeholder='Endereço' type="text" icon='location arrow' value={this.andress} iconPosition='left' fluid
+            disabled />
+          </div>
 
         </div>
 
-        <textarea placeholder="Descrição" value={this.state.description} onChange={this.inputDescription.bind(this)}></textarea>
-          
-          <input type="submit" value="Submit" />
+        <div id="input-descricao-contato">
+          <TextArea autoHeight placeholder="Descrição" value={this.state.description} onChange={this.inputDescription.bind(this)} 
+          rows={4} />
+        </div>
+
+        <div className="botoes-acoes-contato">
+          <Button color="black" type="submit" value="Submit">
+            <Icon name="save"/> Salvar
+          </Button>
+          <Button color="red" onClick={this.navigateToHome.bind(this)}>
+            <Icon name="cancel"/> Cancelar
+          </Button>
+        </div>
 
         </form>
-        
-        <button onClick={this.navigateToHome.bind(this)}>home</button>
       </div>
     );
   }

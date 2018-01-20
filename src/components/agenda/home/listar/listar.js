@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './listar.css';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Statistic } from 'semantic-ui-react';
 
 // Componente que lista todos os contatos vindos do servidor.
 
@@ -57,8 +57,14 @@ class ListarComponent extends Component {
   render() {
     console.log("lista renders");
     return (
-      <div className="lista">
-        {this.generateList()}
+      <div className="home-lista">
+        <Statistic className="stats" size='mini'>
+          <Statistic.Value>{this.props.itens.length}</Statistic.Value>
+          <Statistic.Label>Contatos</Statistic.Label>
+        </Statistic> 
+        <div className="lista">
+          {this.generateList()}
+        </div>
       </div>
     );
   }

@@ -19,7 +19,7 @@
 .pesquisa {
   margin-top: 5%;
   width: 400px;
-  animation: bounceIn 2.0s ease-out forwards; /* Animação de entrada. */
+  animation: fadeIn 2.0s ease-out forwards; /* Animação de entrada. */
 }
 
 /* Quando a tela for maior que 900px */
