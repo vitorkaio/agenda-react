@@ -21,6 +21,7 @@ class AddContactComponent extends Component {
       this.state = {name: "", tel: "", email: "", cep: "", description: "", city: ""};
       this.estado = "";
       this.andress = "";
+      this.erroCep = false;
     }
     else {
       this.state = {
@@ -32,11 +33,14 @@ class AddContactComponent extends Component {
         city: this.props.contactReducer.contact.city};
         this.estado = this.props.contactReducer.contact.state;
         this.andress = this.props.contactReducer.contact.andress;
+        this.erroCep = true;
     }
     
 
     this.telVazio = false; // Verifica se o name está vazio.
+   
     this.loadingCEP = false;
+
     this.entradaRxjs = new Rx.Subject(); // For input CEP.
     
     this.subscriptionCEP = null;
@@ -65,12 +69,11 @@ class AddContactComponent extends Component {
   getObsCep() {
     let obs = {
       next: (data) =>{
-        this.subscriptionApiServiceGetCEP = ApiService.consultaCEP(data).subscribe(this.getObsApiServiceGetAll());
+        this.subscriptionApiServiceGetCEP = ApiService.consultaCEP(data).subscribe(this.getObsApiServiceGetCEP());
       },
       error: (err) => {
-
       },
-      complete: () =>{
+      complete: () => {
         this.subscriptionApiServiceGetCEP.unsubscribe(); // Unsubscribe of a observable.
       }
     }
@@ -79,23 +82,31 @@ class AddContactComponent extends Component {
   }
 
   // Funcs for observables of the api.
-  getObsApiServiceGetAll() {
+  getObsApiServiceGetCEP() {
     let obs = {
       next: (data) =>{
+        this.loadingCEP = false;
+        this.erroCep = true;
+
         console.log(data.data);
         this.estado = data.data.uf;
         this.andress = `${data.data.logradouro}, Bairro: ${data.data.bairro}`;
         this.setState({city: data.data.localidade});
       },
       error: (err) => {
+        console.log("erro no cep");
+        this.loadingCEP = false;
+        this.erroCep = false;
+        
         if(err === false) {
           this.estado = "";
           this.andress = "";
           this.setState({city: ""});
         }
       },
-      complete: () =>{
+      complete: () => {
         console.log('Done!');
+        this.loadingCEP = false;
       }
     }
     return obs;
@@ -166,6 +177,7 @@ class AddContactComponent extends Component {
 
   // Inserts value of andress input in andress state value.
   inputAndress(e) {
+    this.loadingCEP = true;
     this.setState({cep: e.target.value}, () => {
       this.entradaRxjs.next(this.state.cep);
     });
@@ -211,7 +223,7 @@ class AddContactComponent extends Component {
         </div>
         
         <div id="input-contato">
-          <Input placeholder='Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' fluid
+          <Input placeholder='*Telefone' type="number" required icon='call' value={this.state.tel} iconPosition='left' fluid
           onChange={this.inputTel.bind(this)} />
         </div>
 
@@ -223,7 +235,8 @@ class AddContactComponent extends Component {
         </div>
 
         <div id="input-contato">
-          <Input placeholder='CEP' type="text" icon='search' value={this.state.cep} fluid
+          <Input placeholder='CEP' type="text" value={this.state.cep} fluid
+           icon={this.state.cep.length === 0 ? 'search' : (this.erroCep ? "check" : "warning sign")} loading={this.loadingCEP ? true : false}
           onChange={this.inputAndress.bind(this)} />
         </div>
 
@@ -252,15 +265,18 @@ class AddContactComponent extends Component {
         </div>
 
         <div className="botoes-acoes-contato">
-          <Button color="black" type="submit" value="Submit">
+          <Button id="my-butoes-contato" color="black" type="submit" value="Submit" 
+           disabled={this.state.tel.length === 0 ? true : false} >
             <Icon name="save"/> Salvar
           </Button>
-          <Button color="red" onClick={this.navigateToHome.bind(this)}>
+          <Button id="my-butoes-contato" color="red" onClick={this.navigateToHome.bind(this)}>
             <Icon name="cancel"/> Cancelar
           </Button>
         </div>
 
         </form>
+
+        <p id="obr">* campo obrigatório</p>
       </div>
     );
   }

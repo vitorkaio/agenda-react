@@ -6,6 +6,7 @@
   justify-content: center;
   align-items: center;
 
+  animation: fadeInDown 2.0s ease-out forwards;
 }
 
 .adicionar > form {
@@ -65,7 +66,14 @@
   width: 400px;
 }
 
+#my-butoes-contato {
+ width: 200px; 
+}
 
+#obr {
+  margin-top: 10px;
+  color: darkgrey;
+}
 
 @media screen and (max-width: 612px) { 
 
@@ -75,11 +83,12 @@
     justify-content: flex-start;
     align-items: center;
 
-    height: calc(100vh - 120px);
   }
 
   .adicionar > form {
     border: none;
+    padding: 0px !important;
+    width: 100%;
   }
 
   #input-contato {
@@ -121,6 +130,11 @@
 
   .botoes-acoes-contato {
     margin-top: 2%;
+    width: 85%;
+  }
+
+  #my-butoes-contato {
+    width: 40%;
   }
   
 }

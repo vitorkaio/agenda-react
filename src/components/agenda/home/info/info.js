@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import './info.css'
-import { Button, Divider, Icon, Popup } from 'semantic-ui-react';
+import { Button, Icon, Popup } from 'semantic-ui-react';
 
 class InfoComponent extends Component {
-
-  constructor(props) {
-    super(props);
-    
-  }
 
   fechaInfo() {
     this.props.fechaInfo(null);
