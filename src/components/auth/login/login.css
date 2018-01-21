@@ -1,0 +1,66 @@
+.login {
+  height: calc(100vh - 50px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  animation: fadeIn 2s ease-out forwards;
+}
+
+.entrada-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 400px;
+  padding: 20px 40px;
+
+  border: 1px solid lightgray;
+}
+
+.entrada-login > form {
+  width: 100%;
+}
+
+.icone-login {
+  width: 80px;
+  height: 80px;
+}
+
+#input-login {
+  margin-top: 3%;
+  width: 100%;
+}
+
+.botao-login {
+  margin-top: 3%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.go-cadastrar {
+  margin-top: 4%;
+}
+
+@media screen and (max-width: 612px) { 
+
+  .entrada-login {
+    width: 80%;
+    padding: 0px;
+
+    border: solid lightgray;
+    border-width: 0px 0px 1px 0px;
+  }
+
+  .botao-login {
+    margin-bottom: 5%;
+  }
+}

@@ -3,9 +3,9 @@ import './addContact.css';
 import Contact from './../../../shared/models/contact';
 import { Input, TextArea, Button, Icon } from 'semantic-ui-react';
 import Rx from 'rxjs/Rx';
-import ApiService from './../../../shared/services/apiServices'
-import { connect } from 'react-redux'
-import * as contactActions from './../../../redux/actions/contactActions'
+import ApiService from './../../../shared/services/apiServices';
+import { connect } from 'react-redux';
+import * as contactActions from './../../../redux/actions/contactActions';
 
 const user_id = '5a58199463898d1a10f584fd';
 
@@ -18,7 +18,7 @@ class AddContactComponent extends Component {
 
     // Verifica se é para atualizar ou criar um contato.
     if(this.props.contactReducer.contact === undefined) {
-      this.state = {name: "", tel: "", email: "", cep: "", description: "", city: ""};
+      this.state = {name: "", tel: "", email: "", cep: "", description: "", city: "", erroServidor: false};
       this.estado = "";
       this.andress = "";
       this.erroCep = false;
@@ -30,7 +30,10 @@ class AddContactComponent extends Component {
         email: this.props.contactReducer.contact.email, 
         cep: this.props.contactReducer.contact.cep, 
         description: this.props.contactReducer.contact.description, 
-        city: this.props.contactReducer.contact.city};
+        city: this.props.contactReducer.contact.city,
+        erroServidor: false
+        };
+        
         this.estado = this.props.contactReducer.contact.state;
         this.andress = this.props.contactReducer.contact.andress;
         this.erroCep = true;
@@ -38,11 +41,12 @@ class AddContactComponent extends Component {
     
 
     this.telVazio = false; // Verifica se o name está vazio.
-   
-    this.loadingCEP = false;
+    this.loadingCEP = false; // Faz o ícone de load do campo cep girar.
+    this.loadingSubmit = false;
 
     this.entradaRxjs = new Rx.Subject(); // For input CEP.
     
+    // Recebe as subscribe dos obersavables.
     this.subscriptionCEP = null;
     this.subscriptionApiServiceGetCEP = null;
     this.subscriptionApiServiceInsertContact = null;
@@ -115,14 +119,14 @@ class AddContactComponent extends Component {
   // Funcs for observables of the api.
   getObsApiServiceInsertContact() {
     let obs = {
-      next: (res) =>{
+      next: (res) => {
         if(res === true)
           this.navigateToHome();
         else
-          console.log('insert contact error -> next');
+          this.setState({erroServidor: true}, () => {this.loadingSubmit = false});
       },
       error: (err) => {
-        console.log('insert contact error -> err: ', err);
+        this.setState({erroServidor: true}, () => {this.loadingSubmit = false});
       },
       complete: () =>{
         console.log('Done!');
@@ -135,14 +139,14 @@ class AddContactComponent extends Component {
   // Funcs for observables of the api.
   getObsApiServiceUpdateContact() {
     let obs = {
-      next: (res) =>{
+      next: (res) => {
         if(res === true)
           this.navigateToHome();
         else
-          console.log('update contact error -> next');
+          this.setState({erroServidor: true});
       },
       error: (err) => {
-        console.log('update contact error -> err: ', err);
+        this.setState({erroServidor: true});
       },
       complete: () =>{
         console.log('Done!');
@@ -190,10 +194,12 @@ class AddContactComponent extends Component {
   
   // Submit data.
   submit(event) {
+    this.loadingSubmit = true;
+    this.setState({erroServidor: this.state.erroServidor});
+
     if(this.state.tel.length === 0) {
       event.preventDefault(); // Impede de submeter o formulário
       this.telVazio = true;
-      this.setState({name: ""}); // Só para forçar um render.
     }
     else {
       // se for undefined é pq a operação requisita é um cadastro e não um update.
@@ -211,12 +217,12 @@ class AddContactComponent extends Component {
     event.preventDefault(); // Impede de submeter o formulário
   }
 
-  render() {
-    console.log("AddContatctComponent - Renderizado");
+  // Fomulário.
+  getForm() {
     return (
       <div className="adicionar">
         <form onSubmit={this.submit.bind(this)}>
-        
+          
         <div id="input-contato">
           <Input placeholder='Nome'  type="text" icon='users' value={this.state.name} iconPosition='left' fluid
             onChange={this.inputName.bind(this)} />
@@ -236,7 +242,7 @@ class AddContactComponent extends Component {
 
         <div id="input-contato">
           <Input placeholder='CEP' type="text" value={this.state.cep} fluid
-           icon={this.state.cep.length === 0 ? 'search' : (this.erroCep ? "check" : "warning sign")} loading={this.loadingCEP ? true : false}
+            icon={this.state.cep.length === 0 ? 'search' : (this.erroCep ? "check" : "warning sign")} loading={this.loadingCEP ? true : false}
           onChange={this.inputAndress.bind(this)} />
         </div>
 
@@ -266,8 +272,8 @@ class AddContactComponent extends Component {
 
         <div className="botoes-acoes-contato">
           <Button id="my-butoes-contato" color="black" type="submit" value="Submit" 
-           disabled={this.state.tel.length === 0 ? true : false} >
-            <Icon name="save"/> Salvar
+            disabled={this.state.tel.length === 0 ? true : false} >
+            <Icon loading={this.loadingSubmit ? true : false} name={this.loadingSubmit ? "refresh" : "save"}/> Salvar
           </Button>
           <Button id="my-butoes-contato" color="red" onClick={this.navigateToHome.bind(this)}>
             <Icon name="cancel"/> Cancelar
@@ -277,6 +283,15 @@ class AddContactComponent extends Component {
         </form>
 
         <p id="obr">* campo obrigatório</p>
+      </div>
+    )
+  }
+
+  render() {
+    console.log("AddContatctComponent - Renderizado");
+    return (
+      <div>
+        {this.state.erroServidor === false ? this.getForm() : this.props.history.push("/erro-servidor")}
       </div>
     );
   }

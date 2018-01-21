@@ -3,9 +3,9 @@ import './home.css';
 import ApiService from './../../../shared/services/apiServices'
 import ListarComponent from './listar/listar'
 import { Icon, Input } from 'semantic-ui-react';
-import { connect } from 'react-redux'
-import * as contactActions from './../../../redux/actions/contactActions'
-import InfoComponent from './info/info'
+import { connect } from 'react-redux';
+import * as contactActions from './../../../redux/actions/contactActions';
+import InfoComponent from './info/info';
 
 
 class HomeComponent extends Component {
@@ -70,15 +70,15 @@ class HomeComponent extends Component {
    // Obs para deletar um contato.
    getObsDeleteItem() {
     let obs = {
-        next: (next) => {
-          if(next === true){
-           console.log("Contato deletado");
-          }
-          else
-            console.log("Não foi possível deletar o contato");
+      next: (next) => {
+        if(next === true){
+          console.log("Contato deletado");
+        }
+        else
+          this.props.history.push("/erro-servidor");
       },
       error: (err) => {
-        console.log("Não foi possível deletar", err);
+        this.props.history.push("/erro-servidor");
       },
       complete: () => {
         console.log("done delete!");
@@ -143,7 +143,6 @@ class HomeComponent extends Component {
 
   render() {
     console.log('HomeComponente - Rendenrizado');
-    const saida = this.renderizaLista(); // Renderiza a lista se ela existir.
     const loadSpinner = this.auxLista.length; // Se a lista tiver vazia, mostra um spinner de load.
     return (
        <div>
@@ -155,7 +154,7 @@ class HomeComponent extends Component {
           <div className={loadSpinner === 0 ? "loadSpiner" : "listagem"}>
             {loadSpinner === 0 ? null : <Input className="pesquisa" icon='search' placeholder='Pesquisar...' 
             onChange={this.pesquisaFiltraContatos.bind(this)} />}
-            {saida}
+            {this.renderizaLista()}
           </div>}
        </div>
     );

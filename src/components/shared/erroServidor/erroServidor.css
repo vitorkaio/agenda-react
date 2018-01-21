@@ -1,0 +1,18 @@
+.erro-servidor {
+  height: calc(100vh - 80px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.msg-erro {
+  width: 50% !important;
+}
+
+@media screen and (max-width: 612px) { 
+  .msg-erro {
+    width: 80% !important;
+  }
+}
