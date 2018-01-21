@@ -1,0 +1,72 @@
+.register {
+  height: calc(100vh - 50px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  animation: fadeIn 2s ease-out forwards;
+}
+
+.entrada-register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 400px;
+  padding: 20px 40px;
+
+  border: 1px solid lightgray;
+}
+
+.entrada-register > form {
+  width: 100%;
+}
+
+.icone-register {
+  width: 80px;
+  height: 80px;
+}
+
+#input-register {
+  margin-top: 3%;
+  width: 100%;
+}
+
+#erro-register {
+  margin-top: 3%;
+  color: coral;
+  text-align: center;
+}
+
+.botao-register {
+  margin-top: 3%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.go-cadastrar {
+  margin-top: 4%;
+}
+
+@media screen and (max-width: 612px) { 
+
+  .entrada-register {
+    width: 80%;
+    padding: 0px;
+
+    border: solid lightgray;
+    border-width: 0px 0px 1px 0px;
+  }
+
+  .botao-register {
+    margin-bottom: 5%;
+  }
+}

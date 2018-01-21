@@ -2,14 +2,33 @@ import React, { Component } from 'react';
 import './login.css';
 import { Input, Button, Icon } from 'semantic-ui-react';
 import loginSVG from './../../../assets/auth/login.svg';
-
 import { Link } from 'react-router-dom'
+import ApiService from './../../../shared/services/apiServices';
 
 class LoginComponent extends Component {
 
   constructor(props) {
     super(props);
     this.state = {user: "", pass: ""};
+
+    this.subscriptionUser = null;
+
+  }
+
+  // Obs para logar o usuário.
+  getObsLogin() {
+    const obs = {
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log("Done!");
+      }
+    }
+    return obs;
   }
 
   goCadastrar() {
@@ -32,7 +51,7 @@ class LoginComponent extends Component {
 
   // Submit o formulário.
   submit(event) {
-    console.log("Form submit");
+    this.subscriptionUser = ApiService.getUser(this.state.user, this.state.pass).subscribe(this.getObsLogin());
     event.preventDefault(); // Impede de submeter o formulário.
   }
 
@@ -57,8 +76,10 @@ class LoginComponent extends Component {
               onChange={this.inputPass.bind(this)} />
             </div>
 
+            <p id="erro-login">Mensagem de erro</p>
+
             <div className="botao-login">
-              <Button color="grey" type="submit" value="Submit" icon labelPosition='left'
+              <Button color="black" type="submit" value="Submit" icon labelPosition='left'
                 disabled={false}>
                 <Icon name="sign in"/>
                 Login
@@ -71,7 +92,7 @@ class LoginComponent extends Component {
 
         <div className="go-cadastrar">
             <Link to="/auth/register">Cadastrar um novo usuário.</Link>
-          </div>
+        </div>
       </div>
     );
   }

@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { Observable } from 'rxjs/Observable'
+import FirebaseService from './firebase/firebase';
+
+
 const contatcsUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/contatos';
 const contatcsInsertUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/insere';
 const contatcsDeletetUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/delete/';
 const contatcsUpdateUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/update/';
 // const user_id = '5a58199463898d1a10f584fd';
+
+const fireUser = FirebaseService.database().ref().child('users');
 
 // Acess api services.
 class ApiService {
@@ -101,6 +106,49 @@ class ApiService {
       else {
         obs.error(false);
       }
+    });
+  }
+
+  // Retorna todos os usuários do firebase. 'value' => retorna todos os dados do firebase.
+  static getAllUser() {
+    return Observable.create(obs => {
+      fireUser.on('value', snap => {
+        obs.next(snap.val());
+        obs.complete();
+      },(errorObject) => {
+        obs.error(false);
+      });
+    });
+  }
+
+  // Cadastra um usuário no firebase.
+  static insertUser(user) {
+    return Observable.create(obs => {
+      const key = fireUser.push(user, erro => {
+        if(erro)
+          obs.error(false);
+      }).key;
+      obs.next(key);
+      obs.complete();
+    });
+  }
+
+  static getUser(user, pass) {
+    return Observable.create(obs => {
+      let users = [];
+      fireUser.orderByChild("user").equalTo(user).on("value", snap => {
+        snap.forEach(data => {
+          if(data.val().pass === pass)
+            users.push(data);
+        });
+        if(users.length === 0)
+          obs.error(false);
+        else {
+          obs.next(users[0])
+          obs.complete();
+        }
+      });
+      
     });
   }
 

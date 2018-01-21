@@ -37,6 +37,12 @@
   width: 100%;
 }
 
+#erro-login {
+  margin-top: 3%;
+  color: coral;
+  text-align: center;
+}
+
 .botao-login {
   margin-top: 3%;
   width: 100%;
