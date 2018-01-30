@@ -4,20 +4,16 @@ import Contact from './../../../shared/models/contact';
 import { Input, TextArea, Button, Icon } from 'semantic-ui-react';
 import Rx from 'rxjs/Rx';
 import ApiService from './../../../shared/services/apiServices';
-import { connect } from 'react-redux';
-import * as contactActions from './../../../redux/actions/contactActions';
-
-const user_id = '5a58199463898d1a10f584fd';
 
 // Component for insertation of a contact.
 class AddContactComponent extends Component {
 
   constructor(props) {
     super(props);
-    // console.log("AddContactComponent: ", this.props.contactReducer.contact);
+    // console.log(this.props.userReducer);
 
     // Verifica se é para atualizar ou criar um contato.
-    if(this.props.contactReducer.contact === undefined) {
+    if(this.props.contactReducer === undefined) {
       this.state = {name: "", tel: "", email: "", cep: "", description: "", city: "", erroServidor: false};
       this.estado = "";
       this.andress = "";
@@ -25,18 +21,19 @@ class AddContactComponent extends Component {
     }
     else {
       this.state = {
-        name: this.props.contactReducer.contact.name, 
-        tel: this.props.contactReducer.contact.tel, 
-        email: this.props.contactReducer.contact.email, 
-        cep: this.props.contactReducer.contact.cep, 
-        description: this.props.contactReducer.contact.description, 
-        city: this.props.contactReducer.contact.city,
+        name: this.props.contactReducer.name, 
+        tel: this.props.contactReducer.tel, 
+        email: this.props.contactReducer.email, 
+        cep: this.props.contactReducer.cep, 
+        description: this.props.contactReducer.description, 
+        city: this.props.contactReducer.city,
         erroServidor: false
         };
         
-        this.estado = this.props.contactReducer.contact.state;
-        this.andress = this.props.contactReducer.contact.andress;
+        this.estado = this.props.contactReducer.state;
+        this.andress = this.props.contactReducer.andress;
         this.erroCep = true;
+        this.id = this.props.contactReducer._id;
     }
     
 
@@ -55,7 +52,7 @@ class AddContactComponent extends Component {
 
   // Após a inicialização do dom.
   componentDidMount(){
-    console.log('Subscribe in entradaRxjs');
+    // console.log('Subscribe in entradaRxjs');
     this.subscriptionCEP = this.entradaRxjs
       .debounceTime(1000)
       .distinctUntilChanged()
@@ -66,6 +63,12 @@ class AddContactComponent extends Component {
   // After component will be destroyed.
   componentWillUnmount() {
     this.subscriptionCEP.unsubscribe(); // Unsubscribe of a observable.
+    try {
+      this.subscriptionApiServiceInsertContact.unsubscribe();
+      this.subscriptionApiServiceUpdateContact.unsubscribe();
+    } catch (error) {
+      ;
+    }
     // console.log('AddContactComponente - WillUnmount');
   }
 
@@ -92,13 +95,13 @@ class AddContactComponent extends Component {
         this.loadingCEP = false;
         this.erroCep = true;
 
-        console.log(data.data);
+        // console.log(data.data);
         this.estado = data.data.uf;
         this.andress = `${data.data.logradouro}, Bairro: ${data.data.bairro}`;
         this.setState({city: data.data.localidade});
       },
       error: (err) => {
-        console.log("erro no cep");
+        // console.log("erro no cep");
         this.loadingCEP = false;
         this.erroCep = false;
         
@@ -109,7 +112,7 @@ class AddContactComponent extends Component {
         }
       },
       complete: () => {
-        console.log('Done!');
+        // console.log('Done!');
         this.loadingCEP = false;
       }
     }
@@ -120,17 +123,14 @@ class AddContactComponent extends Component {
   getObsApiServiceInsertContact() {
     let obs = {
       next: (res) => {
-        if(res === true)
+        if(res === true) 
           this.navigateToHome();
-        else
-          this.setState({erroServidor: true}, () => {this.loadingSubmit = false});
       },
       error: (err) => {
         this.setState({erroServidor: true}, () => {this.loadingSubmit = false});
       },
       complete: () =>{
-        console.log('Done!');
-        this.subscriptionApiServiceInsertContact.unsubscribe();
+        // console.log('Done!');
       }
     }
     return obs;
@@ -149,8 +149,7 @@ class AddContactComponent extends Component {
         this.setState({erroServidor: true});
       },
       complete: () =>{
-        console.log('Done!');
-        this.subscriptionApiServiceUpdateContact.unsubscribe();
+        // console.log('Done!');
       }
     }
     return obs;
@@ -203,14 +202,14 @@ class AddContactComponent extends Component {
     }
     else {
       // se for undefined é pq a operação requisita é um cadastro e não um update.
-      if(this.props.contactReducer.contact === undefined) {
-        let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id, this.state.cep);
-        this.subscriptionApiServiceInsertContact = ApiService.insertContact(contact.toObj()).subscribe(this.getObsApiServiceInsertContact());
+      if(this.props.contactReducer === undefined) {
+        let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, this.props.userReducer.id, this.state.cep);
+        this.subscriptionApiServiceInsertContact = ApiService.insertContact(this.props.userReducer.id, contact).subscribe(this.getObsApiServiceInsertContact());
       }
         else {
-          let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, user_id, this.state.cep);
-          contact.setId(this.props.contactReducer.contact._id);
-          this.subscriptionApiServiceUpdateContact = ApiService.updateContact(contact.toObj()).subscribe(this.getObsApiServiceUpdateContact());
+          let contact = new Contact(this.state.name, this.state.tel, this.state.email, this.andress, this.state.city, this.estado, this.state.description, this.props.userReducer.id, this.state.cep);
+          contact.setId(this.id);
+          this.subscriptionApiServiceUpdateContact = ApiService.updateContact(this.props.userReducer.id, contact.toObj()).subscribe(this.getObsApiServiceUpdateContact());
         }      
       }
 
@@ -288,7 +287,7 @@ class AddContactComponent extends Component {
   }
 
   render() {
-    console.log("AddContatctComponent - Renderizado");
+    // console.log("AddContatctComponent - Renderizado");
     return (
       <div>
         {this.state.erroServidor === false ? this.getForm() : this.props.history.push("/erro-servidor")}
@@ -297,18 +296,4 @@ class AddContactComponent extends Component {
   }
 }// end component
 
-const mapStateToProps = (state) => {
-  return {
-    contactReducer: state.contactReducer
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeContact: () => {
-      dispatch(contactActions.removeContact())
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddContactComponent);
+export default AddContactComponent;

@@ -10,27 +10,18 @@ class NavbarDesktopComponent extends Component {
   constructor(props) {
     super(props);
 
-    const urlAtual = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
-    //this.state = {activeItem: urlAtual};
+    const urlAtual = this.props.navbarProps.location.pathname.split("/").pop();
     this.itemAtivado = urlAtual;
     //console.log('NavbarDesktopComponent');
     //console.log(this.props.userReducer.user);
   }
 
   ativaItem(event) {
+    /*this.setState({itemAtivado: event.target.id}, () => {
+      this.props.navigateTo(this.state.itemAtivado);
+    })*/
     this.itemAtivado = event.target.id;
-
-    if(this.itemAtivado === "home")
-      this.props.navbarProps.rotaProps.push('/agenda/home');
-      
-    else if (this.itemAtivado === "add")
-      this.props.navbarProps.rotaProps.push('/agenda/add');
-
-    else if (this.itemAtivado === "info")
-      this.props.navbarProps.rotaProps.push('/auth/register');
-
-    else if (this.itemAtivado === "sair")
-      this.props.navbarProps.rotaProps.push('/auth/login');
+    this.props.navigateTo(this.itemAtivado);
   }
 
   /*componentDidUpdate() {
@@ -39,7 +30,7 @@ class NavbarDesktopComponent extends Component {
 
   render() {
     // console.log('NavbarDesktopComponent - Renderizado');
-    const rotaAtual = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
+    const rotaAtual = this.props.navbarProps.location.pathname.split("/").pop();
     this.itemAtivado = rotaAtual === this.itemAtivado ? this.itemAtivado : rotaAtual;
 
     return (
@@ -58,8 +49,8 @@ class NavbarDesktopComponent extends Component {
 
         <div className="ops">
 
-          <div id="info" className={this.itemAtivado === "info" ? "marcado hovs" : "hovs"}
-          onClick={this.ativaItem.bind(this)}>Info</div>
+          <div id="conta" className={this.itemAtivado === "conta" ? "marcado hovs" : "hovs"}
+          onClick={this.ativaItem.bind(this)}>Conta</div>
 
 
           <div id="sair" className={this.itemAtivado === "sair" ? "marcado hovs" : "hovs"}

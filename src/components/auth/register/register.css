@@ -56,6 +56,18 @@
   margin-top: 4%;
 }
 
+#load-register {
+  margin-top: 3%;
+  text-align: center;
+  height: 36px;
+}
+
+#erro-register {
+  margin-top: 4%;
+  color: coral;
+  text-align: center;
+}
+
 @media screen and (max-width: 612px) { 
 
   .entrada-register {

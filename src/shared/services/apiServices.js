@@ -3,80 +3,10 @@ import { Observable } from 'rxjs/Observable'
 import FirebaseService from './firebase/firebase';
 
 
-const contatcsUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/contatos';
-const contatcsInsertUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/insere';
-const contatcsDeletetUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/delete/';
-const contatcsUpdateUrl = 'http://localhost:8989/user/5a58199463898d1a10f584fd/update/';
-// const user_id = '5a58199463898d1a10f584fd';
-
 const fireUser = FirebaseService.database().ref().child('users');
 
 // Acess api services.
 class ApiService {
-
-  // Return all contacts of the mongodb
-  static getAllContacts() {
-    return Observable.create(obs => {
-      axios.get(contatcsUrl).then(res => {
-        obs.next(res.data);
-        obs.complete();
-      })
-      .catch(err => {
-        obs.error(err);
-      })
-    });
-  }
-
-  // Insert contact
-  static insertContact(contact) {
-    console.log(contact);
-    return Observable.create(obs => {
-      axios.post(contatcsInsertUrl, contact).then(res => {
-        console.log(res.data.status);
-        if(res.data.status === true) {
-          obs.next(true);
-          obs.complete();
-        }
-        else {
-          obs.next(false);
-        }
-      }).catch(err => {
-        obs.error(false);
-      });
-    });
-  }
-
-    // Update contact
-    static updateContact(contact) {
-      console.log(contact);
-      return Observable.create(obs => {
-        axios.put(contatcsUpdateUrl + contact['_id'], contact).then(res => {
-          console.log(res.data.status);
-          if(res.data.status === true) {
-            obs.next(true);
-            obs.complete();
-          }
-          else {
-            obs.next(false);
-          }
-        }).catch(err => {
-          obs.error(false);
-        });
-      });
-    }
-
-  // Delete one contact
-  static deleteContact(id) {
-    return Observable.create(obs => {
-      axios.delete(contatcsDeletetUrl + id).then(res => {
-        if(res.data.status === true)
-          obs.next(true);
-        else
-          obs.next(false);
-        obs.complete();
-      }).catch(err => {obs.error(err)});
-    });
-  }
 
   // Get andress with CEP.
   static consultaCEP(numero) {
@@ -121,6 +51,7 @@ class ApiService {
     });
   }
 
+
   // Cadastra um usuário no firebase.
   static insertUser(user) {
     return Observable.create(obs => {
@@ -149,6 +80,91 @@ class ApiService {
         }
       });
       
+    });
+  }
+
+  // Verifica se um usuário está cadastrado no sistema.
+  static isRegister(user) {
+    return Observable.create(obs => {
+      fireUser.orderByChild("user").equalTo(user).on("value", snap => {
+        if(snap.val() === null)
+          obs.next(true);
+        else
+          obs.error(false)
+
+        obs.complete();
+      });
+      
+    });
+  }
+
+  // Delete one contact
+  static deleteUser(user_id) {
+    return Observable.create(obs => {
+      const fireUserContacts = FirebaseService.database().ref().child(`users/${user_id}`);
+      fireUserContacts.remove().then(res => {
+        obs.next(true);
+        obs.complete();
+      }).catch(err => {
+        obs.error(false);
+      })
+    });
+  }
+
+  // Return all contacts of the mongodb
+  static getAllContacts(user_id) {
+    return Observable.create(obs => {
+      const fireUserContacts = FirebaseService.database().ref().child(`users/${user_id}/contacts`);
+      fireUserContacts.orderByChild("name").on('value', snap => {
+        snap.forEach(item => {
+          obs.next(item);
+        })
+        obs.complete();
+      },(errorObject) => {
+        obs.error(false);
+      });
+    });
+  }
+
+  // Insere um contato no firebase.
+  static insertContact(user_id, contact) {
+    // console.log(contact);
+    return Observable.create(obs => {
+      const fireUserContacts = FirebaseService.database().ref().child(`users/${user_id}/contacts`);
+      fireUserContacts.push(contact, erro => {
+        if(erro === false)
+          obs.error(false);
+      });
+      obs.next(true);
+      obs.complete();
+    });
+  }
+
+   // Update contact
+   static updateContact(user_id, contact) {
+    return Observable.create(obs => {
+      const fireUserContacts = FirebaseService.database().ref().child(`users/${user_id}/contacts/${contact._id}`);
+      fireUserContacts.update(contact, erro => {
+        if(erro === false)
+          obs.error(false);
+        else {
+          obs.next(true);
+          obs.complete();
+        }
+      });
+    });
+  }
+
+   // Delete one contact
+   static deleteContact(user_id, contato) {
+    return Observable.create(obs => {
+      const fireUserContacts = FirebaseService.database().ref().child(`users/${user_id}/contacts/${contato._id}`);
+      fireUserContacts.remove().then(res => {
+        obs.next(true);
+        obs.complete();
+      }).catch(err => {
+        obs.error(false);
+      })
     });
   }
 

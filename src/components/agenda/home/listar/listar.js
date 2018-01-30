@@ -20,7 +20,7 @@ class ListarComponent extends Component {
   generateList() {
     let saida = [];
     for(let x = 0; x < this.props.itens.length; x++) {
-      console.log("render lista: ", x);
+      // console.log("render lista: ", x);
       saida.push(
         <div key={x} className="item-lista">
           <div className="nome-lista">
@@ -55,7 +55,7 @@ class ListarComponent extends Component {
   }
 
   render() {
-    console.log("lista renders");
+    // console.log("lista renders");
     return (
       <div className="home-lista">
         <Statistic className="stats" size='mini'>

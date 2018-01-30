@@ -43,6 +43,12 @@
   text-align: center;
 }
 
+#load-login {
+  margin-top: 3%;
+  text-align: center;
+  height: 36px;
+}
+
 .botao-login {
   margin-top: 3%;
   width: 100%;
@@ -68,5 +74,10 @@
 
   .botao-login {
     margin-bottom: 5%;
+  }
+
+  #load-login {
+    margin-bottom: 6%;
+    height: 33px;
   }
 }

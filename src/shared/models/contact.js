@@ -2,7 +2,7 @@
 class Contact {
   
   constructor(name, tel, email, andress, city, state, description, user_id, cep) {
-    this._id = '';
+    this._id = null;
     this.name = name;
     this.tel = tel;
     this.email = email;

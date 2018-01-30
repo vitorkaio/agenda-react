@@ -15,17 +15,7 @@ class SidebarContentComponent extends Component {
 
     this.props.fechaSideBar();
 
-    if(this.itemAtivado === "home")
-      this.props.navMobile.push('/agenda/home');
-      
-    else if (this.itemAtivado === "add")
-      this.props.navMobile.push('/agenda/add');
-
-    else if (this.itemAtivado === "info")
-      this.props.navMobile.push('/auth/register');
-
-    else if (this.itemAtivado === "sair")
-      this.props.navMobile.push('/auth/login');
+    this.props.navTo(this.itemAtivado);
   }
 
   render() {
@@ -48,10 +38,10 @@ class SidebarContentComponent extends Component {
           <span id="add">Adicionar</span>
         </div>
 
-        <div className={this.itemAtivado === "info" ? "marcadoMobile" : null}
+        <div className={this.itemAtivado === "conta" ? "marcadoMobile" : null}
          onClick={this.ativaItem.bind(this)}>
           <Icon name="info"/>
-          <span id="info">Info</span>
+          <span id="conta">Conta</span>
         </div>
 
         <Divider />

@@ -4,6 +4,9 @@ import './navbar.css'
 
 import NavbarDesktopComponent from './navDesktop/navDesktop'
 import NavbarMobileComponent from './navMobile/navMobile'
+import * as userActions from './../../../../redux/actions/userActions';
+import { connect } from 'react-redux';
+
 
 class NavbarComponent extends Component {
 
@@ -22,9 +25,27 @@ class NavbarComponent extends Component {
     this.setState({larguraTela: window.innerWidth});
   }
 
+  // Navega para alguma rota.
+  navigateTo(rota) {
+
+    if(rota === "home")
+      this.props.history.push('/agenda/home');
+      
+    else if (rota === "add")
+      this.props.history.push('/agenda/add');
+
+    else if (rota === "conta")
+      this.props.history.push('/agenda/conta');
+
+    else if (rota === "sair") {
+      this.props.removeUser();
+      this.props.history.push('/auth/login');
+    }
+  }
+
   render() {
-    //console.log("Navbar - render");
-    const nav = this.state.larguraTela >= 612 ? <NavbarDesktopComponent navbarProps={this.props}/> : <NavbarMobileComponent navbarProps={this.props}/>
+    const nav = this.state.larguraTela >= 612 ? <NavbarDesktopComponent navbarProps={this.props.history} navigateTo={this.navigateTo.bind(this)}/> 
+    : <NavbarMobileComponent navbarProps={this.props.history} navigateTo={this.navigateTo.bind(this)}/>
     return (
         <div>
           {nav}
@@ -33,4 +54,18 @@ class NavbarComponent extends Component {
   }
 }
 
-export default NavbarComponent;
+const mapStateToProps = (state) => {
+  return {
+    userReducer: state.userReducer
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeUser: () => {
+      dispatch(userActions.removeUser())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);

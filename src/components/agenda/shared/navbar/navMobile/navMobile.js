@@ -13,8 +13,8 @@ class NavbarMobileComponent extends Component {
     this.state = { sidebarOpen: false};
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
 
-    this.urlAtual = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
-    this.route = this.props.navbarProps.rotaProps;
+    this.urlAtual = this.props.navbarProps.location.pathname.split("/").pop();
+    this.route = this.props.navbarProps;
 
     this.titulo = "";
   }
@@ -31,7 +31,7 @@ class NavbarMobileComponent extends Component {
 
   // Atualiza o nome da rota atual.
   getRotaAtual() {
-    const rota = this.props.navbarProps.rotaProps.location.pathname.split("/").pop();
+    const rota = this.props.navbarProps.location.pathname.split("/").pop();
 
     if(rota === "home")
       this.titulo = "Home";
@@ -39,8 +39,8 @@ class NavbarMobileComponent extends Component {
     else if(rota === "add")
       this.titulo = "Adicionar";
 
-    else if(rota === "info")
-      this.titulo = "Info";
+    else if(rota === "conta")
+      this.titulo = "Conta";
     
     else if(rota === "sair")
       this.titulo = "Sair";
@@ -54,7 +54,7 @@ class NavbarMobileComponent extends Component {
         <div className="navsMobile">
           <div>
           <Sidebar contentClassName="sidebarMobile" shadow={false}
-            sidebar={<SidebarContentComponent navMobile={this.route} fechaSideBar={this.abreSidebar.bind(this)}/>} 
+            sidebar={<SidebarContentComponent navMobile={this.route} navTo={this.props.navigateTo} fechaSideBar={this.abreSidebar.bind(this)}/>} 
             sidebarClassName="sidebarContentMobile"
             rootClassName={this.state.sidebarOpen === true ? null : "root"}
             touch={false}

@@ -1,8 +1,6 @@
-let modeloInicial = {
-  user: null
-}
+let user = null;
 
-const userReducer = (state = modeloInicial, action) => {
+const userReducer = (state = user, action) => {
   switch (action.type) {
     case 'ADD_USER':
       state = {

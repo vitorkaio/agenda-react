@@ -15,8 +15,25 @@ const reducer = persistCombineReducers(config, {contactReducer, userReducer})
 
 export default function configureStore () {
   // ...
+  let store = createStore(reducer, {}, applyMiddleware());
+  let persistor = persistStore(store)
+
+  return { persistor, store }
+}
+
+/*
+const config = {
+  key: 'root',
+  storage,
+}
+
+const reducer = persistCombineReducers(config, {contactReducer, userReducer})
+
+export default function configureStore () {
+  // ...
   let store = createStore(reducer, {}, applyMiddleware(logger));
   let persistor = persistStore(store)
 
   return { persistor, store }
 }
+*/

@@ -5,9 +5,9 @@ export function insertUser(user){
   }
 }
 
-export function removeUser(user){
+export function removeUser(){
   return {
     type: 'POP_USER',
-    payload: user
+    payload: null
   }
 }

@@ -23,7 +23,6 @@ class InfoComponent extends Component {
     return (
       <div className="tudo-contato">
         <div className="infos">
-          <div className="mapa-contato"></div>
           <div className="info-contato">
             <div className="titulo-contato"><Icon name="users"/> {this.props.contatoInfo.name}</div>
             <div><Icon name="call"/> {this.props.contatoInfo.tel}</div>
