@@ -26,7 +26,7 @@
 
   width: 100%;
 
-  animation: zoomIn 2.0s ease-out forwards; /* Animação de entrada. */
+  animation: zoomIn 2.0s ease-in forwards; /* Animação de entrada. */
   /*animation: slideInLeft 2.5s ease-out forwards;*/ /* Animação de entrada. */
 }
 
@@ -47,7 +47,16 @@
   align-items: flex-start;
   
   background-color: #fefefe;
+}
 
+#item-info {
+  font-size: 17px;
+  cursor: pointer;
+}
+
+#item-info:hover {
+  color: cornflowerblue;
+  animation: jello 1s ease-out forwards infinite;
 }
 
 .nome-lista {
@@ -57,15 +66,10 @@
   font-size: 15px;
   
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   
   font-weight: bold;
-}
-
-.nome-item:hover {
-  color: cornflowerblue;
-  cursor: pointer;
 }
 
 .telefone-lista {

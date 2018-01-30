@@ -24,9 +24,11 @@ class ListarComponent extends Component {
       saida.push(
         <div key={x} className="item-lista">
           <div className="nome-lista">
-            <div className="nome-item" onClick={() => this.abreInfo(this.props.itens[x])}>
+          <div></div>
+            <div className="nome-item">
               {this.props.itens[x].name.length === 0 ? "(sem nome)" : this.props.itens[x].name}
             </div>
+            <div id="item-info" onClick={() => this.abreInfo(this.props.itens[x])}><Icon name="info circle"/></div>
           </div>
     
           <div className="telefone-lista">
