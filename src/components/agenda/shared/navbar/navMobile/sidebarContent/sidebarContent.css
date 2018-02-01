@@ -9,7 +9,7 @@
 }
 
 .conteudoSideBar > div {
-  margin: 7% 3%;
+  margin: 15px 10px;
 
   display: flex;
   justify-content: flex-start;

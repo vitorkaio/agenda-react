@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-
 }
 
 .loadSpiner {
@@ -17,7 +16,8 @@
 }
 
 .pesquisa {
-  margin-top: 5%;
+    margin-top: 20px;
+  /* margin-top: 5%; */
   width: 400px;
   animation: fadeIn 2.0s ease-out forwards; /* Animação de entrada. */
 }
@@ -25,7 +25,8 @@
 /* Quando a tela for maior que 900px */
 @media screen and (min-width: 900px) {
   .pesquisa {
-    margin-top: 2%;
+      margin-top: 20px;
+    /* margin-top: 2%; */
   }
 }
 

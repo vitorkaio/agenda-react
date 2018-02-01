@@ -20,12 +20,14 @@
 }
 
 #input-contato {
-  margin-top: 5%;
+  /* margin-top: 5%; */
+  margin-top: 20px;
   width: 400px;
 }
 
 .ceps {
-  margin-top: 6%;
+  margin-top: 24px;
+  /* margin-top: 6%; */
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -37,6 +39,7 @@
   border-width: 1px 0px 0px 0px;
 
   padding: 10px 0px;
+  height: 115px;
 }
 
 #input-cep-cidade {
@@ -58,7 +61,7 @@
 }
 
 .botoes-acoes-contato {
-  margin-top: 1%;
+  margin-top: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +81,6 @@
 @media screen and (max-width: 612px) { 
 
   .adicionar {
-    margin-top: 1%;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
@@ -92,12 +94,10 @@
   }
 
   #input-contato {
-    margin-top: 5%;
     width: 85% !important;
   }
 
   .ceps {
-    margin-top: 5%;
     width: 85%;
   
     border: solid lightgray;
@@ -116,7 +116,6 @@
   }
   
   #input-cep-endereco {
-    margin-top: 2%;
     width: 100%;
   }
   
@@ -129,7 +128,6 @@
   }
 
   .botoes-acoes-contato {
-    margin-top: 2%;
     width: 85%;
   }
 
